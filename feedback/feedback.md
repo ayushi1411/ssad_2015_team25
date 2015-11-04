@@ -33,7 +33,7 @@
 #### Test Plan
 (Marks given : 10/10)
 
-* Completed.
+* Completed with well written Test Cases.
 
 #### Status Tracker 3
 (Marks given : 5/5)
@@ -41,6 +41,6 @@
 * Updated and Completed in Time.
 
 #### Status Tracker 4
-(Marks given : 3/5)
+(Marks given : 4/5)
 
-* Not completed.
+* Completed in Time.
