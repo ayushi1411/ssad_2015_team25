@@ -2,7 +2,7 @@ var express=require('express');
 var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('data', 'root', 'root', {
+var sequelize = new Sequelize('data', 'root', 'risa1996', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -15,7 +15,7 @@ var sequelize = new Sequelize('data', 'root', 'root', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'root',
+  password : 'risa1996',
   database : 'data'
 });
 
@@ -48,13 +48,13 @@ connection.query(QueryString, function(err, rows, fields) {
 app.get('/getcompanydata',function(req,res) {
  //   console.log("This is the query -> ");
    // console.log(req.query.q);
-
+  
   // tokenizing the input string(user query) using whitespaces in an array of strings "arr"
     var arr = req.query.q.toString().split(/\b\s+/);
     
   // Normalising the entire search query and converting it into small letters for structured search.  
     for (var i = 0; i < arr.length; i++) {   
-      arr[i]=arr[i].toLowerCase();
+      arr.push=arr[i].toLowerCase();
     };
 
  
@@ -293,8 +293,29 @@ app.get('/phoneinfo',function(req,res) {
    });
 });
 
+app.get('/brands',function(req,res){
+    QueryString='select distinct(company) from data;';
+/*connection.query((QueryString),function(err,rows,field){
+if(err) throw err;
+console.log(rows[0].company);
 
+});*/
+    sequelize.query(QueryString).spread(function(studentsdata,metadata){
+      res.setHeader("Access-Control-Allow-Origin","*");
+      console.log(studentsdata[0].company);
+      res.render('brands.html',{CompanyData:studentsdata})
+    });
+});
+
+app.get('/matrix',function(req,res){
+    QueryString="select * from data where company ='"+req.query.brand+ "' order by price;";
+    sequelize.query(QueryString).spread(function(studentsdata,metadata){
+      res.setHeader("Access-Control-Allow-Origin","*");
+      res.render('matrix.html',{MatrixData:studentsdata})
+    });
+});
 
 var server=app.listen(3000,function(){
 console.log("We have started our server on port 3000");
 });
+
