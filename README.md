@@ -3,16 +3,16 @@
 ### World's first choice engine. ###
 The Elektoo project deals with the creation of a choice based search engine probably first of its kind.
 The main problem this project is trying to solve:
-* Choice Overload
-* Wrong choices
-* Unavailability of choice centric IT solutions
+- Choice Overload
+- Wrong choices
+- Unavailability of choice centric IT solutions
 
 and to provide the user with results strictly related to te search he/she made.
 ***
 ### Features ###
 Under this project the user is provided with two kinds of seaching methods to choose from. 
-* Search Query Box
-* Choice matrix
+- Search Query Box
+- Choice matrix
 ***
 ### Search Query Box ###
 In this method of search the usser is provided with a query box in which the user gives an input(text) which is prcocessed by the system and if found some ambiguous ords then the system tries to resolve that ambiguity by giving the users some concrete suggestions in place of those ambigous words.
@@ -76,9 +76,4 @@ sudo fuser XXXX/tcp -k           // to kill the XXXX process and make that port 
 * Prachi Agrawal - Tech
 * Vinay Singh - Documentation
 
-*** 
-
-
-
-
-
+***
