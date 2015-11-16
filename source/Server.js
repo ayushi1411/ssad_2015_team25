@@ -294,19 +294,28 @@ app.get('/phoneinfo',function(req,res) {
 });
 
 app.get('/brands',function(req,res){
-QueryString='select distinct(company) from data;';
+    QueryString='select distinct(company) from data;';
 /*connection.query((QueryString),function(err,rows,field){
 if(err) throw err;
 console.log(rows[0].company);
 
 });*/
-sequelize.query(QueryString).spread(function(studentsdata,metadata){
-res.setHeader("Access-Control-Allow-Origin","*");
-console.log(studentsdata[0].company);
-res.render('brands.html',{CompanyData:studentsdata})
+    sequelize.query(QueryString).spread(function(studentsdata,metadata){
+      res.setHeader("Access-Control-Allow-Origin","*");
+      console.log(studentsdata[0].company);
+      res.render('brands.html',{CompanyData:studentsdata})
+    });
 });
+
+app.get('/matrix',function(req,res){
+    QueryString="select * from data where company ='"+req.query.brand+ "' order by price;";
+    sequelize.query(QueryString).spread(function(studentsdata,metadata){
+      res.setHeader("Access-Control-Allow-Origin","*");
+      res.render('matrix.html',{MatrixData:studentsdata})
+    });
 });
 
 var server=app.listen(3000,function(){
 console.log("We have started our server on port 3000");
 });
+
