@@ -12,7 +12,8 @@ The main problem this project is trying to solve:
 and to provide the user with results strictly related to te search he/she made.
 ***
 ### Features ###
-Under this project the user is provided with two kinds of seaching methods to choose from. 
+Under this project the user is provided with two kinds of seaching methods to choose from.
+ 
 * Search Query Box
 * Choice matrix
 ***
