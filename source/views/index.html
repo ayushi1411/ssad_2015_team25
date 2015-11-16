@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Elektoo</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script  type="text/javascript" src="typeahead.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			$('input.typeahead').typeahead({
+				name: 'countries',
+				remote: 'http://localhost:3000/search?key=%QUERY',
+				limit: 10
+			});
+		});
+		
+		function getData() {	
+			var model ={};
+			var text = document.getElementById('myInput').value;
+			$.ajax({
+				url: "http://127.0.0.1:3000/getcompanydata?q=" + text,
+				data:model,
+				dataType: "json",
+				success : function (data) {
+					// console.log(data);
+					data = data.StudentsDataOut;
+					console.log(data);
+					var myString = "";
+					for (var i = 0; i < data.length; i++) {
+						var phoneid = data[i].phoneid;
+						var company = data[i].company;
+						var model = data[i].model;
+						var screen_size=data[i].screen_size;
+						var price=data[i].price
+					///	var color=data[i].color
+						var temp = "<a href = http://127.0.0.1:3000/phoneinfo?pid="+ phoneid + '>' +company +'&nbsp&nbsp&nbsp' + model + '&nbsp&nbsp&nbsp' +"</a></br></br>";
+						var COUNT="Results Found: " + data.length+"</br>";
+						myString= myString + temp;
+					};
+					console.log(myString);
+					showIt(myString,COUNT);
+				}
+			});
+		}
+		function showIt(data,COUNT){
+			testIt = data;
+			document.getElementById('URL').innerHTML = data;
+			document.getElementById('Counts').innerHTML = COUNT;
+		} 
+	</script>
+	<style type="text/css">
+		.bs-example{
+			font-family: sans-serif;
+			position: relative;
+			margin: 50px;
+			/*float:left;*/
+		}
+		.typeahead, .tt-query, .tt-hint {
+			border: 2px solid #CCCCCC;
+			border-radius: 8px;
+			font-size: 24px;
+			height: 30px;
+			line-height: 30px;
+			outline: medium none;
+			padding: 8px 12px;
+			width: 396px;
+		}
+		.typeahead {
+			background-color: #FFFFFF;
+		}
+		.typeahead:focus {
+			border: 2px solid #0097CF;
+		}
+		.tt-query {
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+		}
+		.tt-hint {
+			color: #999999;
+		}
+		.tt-dropdown-menu {
+			background-color: #FFFFFF;
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			border-radius: 8px;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+			margin-top: 12px;
+			padding: 8px 0;
+			width: 422px;
+		}
+		.tt-suggestion {
+			font-size: 24px;
+			line-height: 24px;
+			padding: 3px 20px;
+		}
+		.tt-suggestion.tt-is-under-cursor {
+			background-color: #0097CF;
+			color: #FFFFFF;
+		}
+		.tt-suggestion p {
+			margin: 0;
+		}
+		.tt-submit {
+			height: 50px;
+			width: 150px;
+			/*position: absolute;*/
+
+		}
+		#URL{
+			margin-top:20px; 
+			margin-left:20px;
+			font-size:20px;
+
+		}
+		#Counts{
+			font-size: 20px;
+			color:green;
+		}
+		body {
+    background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /*background-position: center; */
+    background-size: 1900px 1400px;
+
+} 
+		
+
+	</style>
+</head>
+<body>
+	<div class="page-header">
+		<h1>Search Engine</h1>
+	</div>
+	<!-- <div id="wrapper"> -->
+	<div class="bs-example">
+		<table>
+		<tr>
+		   <td><input id="myInput" type="text" name="typeahead" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="Type your Query"></td>
+			<td><input id="button" placeholder="Submit" name="submit" class="tt-submit" type="submit" onclick="getData()"></td>
+		    <td id="Counts"></td>
+		</tr>
+		</table>
+	</div>
+</br>
+<!-- <div id="Counts">
+
+</div> -->
+<!-- </div> -->
+<div id='URL'>
+
+</div>
+</body>
+</html>
