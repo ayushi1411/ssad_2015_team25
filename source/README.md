@@ -1,2 +1,8 @@
-Source code of your project.
-**Do not make seperate folder for every week**
+// Author : IronmanIIITH //
+
+
+Run npm install in your directory before starting the server
+
+DB and Table structure
+column - rollNo, firstName, lastName (here rollNo is mandatory)
+database name - test
