@@ -4,6 +4,7 @@
 ### World's first choice engine. ###
 The Elektoo project deals with the creation of a choice based search engine probably first of its kind.
 The main problem this project is trying to solve:
+
 * Choice Overload
 * Wrong choices
 * Unavailability of choice centric IT solutions
