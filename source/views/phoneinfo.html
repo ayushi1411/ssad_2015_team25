@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Elektoo</title>
+
+
+</head>
+	<body>
+	<div id='phonedisplay'>
+	Phone info goes here
+	</div>
+
+	<script type="text/javascript">
+
+		function showIt(data){
+			document.getElementById('phonedisplay').innerHTML = data;
+
+		} 
+			 var data = <%- JSON.stringify(StudentsDataOut) %>
+
+			 console.log(data)
+
+			 var myString = "";
+			 for (var i = 0; i < data.length; i++) {
+					var company = data[i].company;
+					var phoneid = data[i].phoneid;
+					var model = data[i].model;
+					var screen_size = data[i].screen_size;
+					var price = data[i].price;
+					var temp = "<img src=http://img6a.flixcart.com/image/mobile/z/5/3/samsung-galaxy-e7-e7-400x400-imae3ursdgrgpgrm.jpeg" + " "+ "align=left" + " " +	  "alt=No" +
+								"image available> "+ "</br></br></br>"+"<table class=tab" + ">"+
+								"<tr><th>Phone Details:</th></tr>"+
+								"<tr><td>Company: "+ company + "</td></tr>"+
+								"<tr><td>Model: "+ model + "</td></tr>"+
+								"<tr><td>Screen size: "+ screen_size + "</td></tr>"+
+								"<tr><td>Price: "+ price + "</td></tr>"+"</table>"
+								;
+						myString= myString + temp;
+					};
+					showIt(myString);
+
+		
+		</script>
+		<style type="text/css">
+/*		body {
+			padding: 300px;
+			position: absolute;
+			 background-size: 1300px 1200px;
+			 background-repeat: no-repeat;
+  		/*	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color:black; 
+ 			background-image: url("https://www.walldevil.com/wallpapers/a49/thumb/wallpaper-desktop-backgrounds-minimalistic-blue-simple-wallpapers-background.jpg");
+
+		} */
+
+		img
+
+		tr {
+			text-align: left;
+		}
+		</style>
+	</body>
+</html>
