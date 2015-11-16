@@ -48,13 +48,13 @@ connection.query(QueryString, function(err, rows, fields) {
 app.get('/getcompanydata',function(req,res) {
  //   console.log("This is the query -> ");
    // console.log(req.query.q);
-
+  
   // tokenizing the input string(user query) using whitespaces in an array of strings "arr"
     var arr = req.query.q.toString().split(/\b\s+/);
     
   // Normalising the entire search query and converting it into small letters for structured search.  
     for (var i = 0; i < arr.length; i++) {   
-      arr[i]=arr[i].toLowerCase();
+      arr.push=arr[i].toLowerCase();
     };
 
  
