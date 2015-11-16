@@ -24,7 +24,7 @@ The query box is also loaded with feaures like "auto-complete" and "auto-correct
 The final display of the query woulld be a list of products/items related to the query given for search.
 
 ***
-### Choice Matrix ### 
+### Choice Matrix ###
 Here the user will be provided with a 9x6 matrix haxing 9 product features and 5 values of those features(one column for the name of the feature).
 Once a user selects a brand from the list of brands the user is provided on the selection of the choice matrix, he'll be displayed with the matrix related to that brand only. There will be options to select or deselect of diffeent tabs in the respected rows as per which the entire matrix will be updated. This method of seaarching will too have the "count" besides it as to diplay the total count of product to be displayed as the result of the till updated matrix.
 The fianl display of this will be similar to the "Search Query Box", it will to list down the products.
