@@ -2,7 +2,7 @@ var express=require('express');
 var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('data', 'root', 'root', {
+var sequelize = new Sequelize('phones', 'root', 'helloworld', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -15,8 +15,8 @@ var sequelize = new Sequelize('data', 'root', 'root', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'root',
-  database : 'data'
+  password : 'helloworld',
+  database : 'phones'
 });
 
 connection.connect();
@@ -34,17 +34,61 @@ res.render('index.html');
 
 // autocomplete feature implementation
 app.get('/search',function(req,res){
-QueryString = 'select * from data where company like "' + req.query.key + '%";'; 
-connection.query(QueryString, function(err, rows, fields) {
-	  if (err) throw err;
-    var data=[];
-    for(i=0;i<rows.length;i++)
-      {
-        data.push(rows[i].company);
+
+  
+  var param_p = ['company', 'model','color'];
+  var exp_words = ['with', 'having', 'have', 'of', 'not', "don't", 'for', 'amount', 'price', 'cost', 'and',
+                   'lessthan', 'greaterthan', 'between', 'under', 'equal', 'below', 'above', 'phone', 'company',
+                    'rs', 'color', 'coloured', 'screen', 'screensize'];
+
+  console.log("query string");
+  console.log(req.query.key);
+  var arr = req.query.key.toString().split(/\b\s+/);
+
+  var len = arr.length;
+  var last_word = arr[len-1].toLowerCase();
+
+  var data = [];
+  var str = '^' + last_word + '.*';
+
+  console.log('regex');
+  console.log(str);
+  var re = new RegExp(str, "g");
+
+  for(var i=0; i<exp_words.length; i++)
+  {
+    if(re.test(exp_words[i]))
+      data.push(exp_words[i]);
+  }
+
+
+// partially manipulating asynchronous callback by creating partial function for each turn of the loop
+  for(var i=0; i<param_p.length; i++) (function(i){
+   var  qstr='select distinct '  + param_p[i] + ' from data where ' + param_p[i] + ' like "' + last_word + '%";'; 
+
+    connection.query(qstr, function(err, rows, fields) {
+
+    if (err) throw err;
+   
+
+    for(var j=0; j<rows.length; j++)
+     {
+ 
+       var temp2 = qstr.split(/\b\s+/);
+       console.log(temp2[2]);
+       console.log(rows[j][temp2[2]]);
+       data.push(rows[j][temp2[2]]);
+      
       }
-      res.end(JSON.stringify(data));
-	});
+    
+    res.end(JSON.stringify(data));
+  
+  });
+  }) (i);
+
 });
+
+
 
 app.get('/getcompanydata',function(req,res) {
  //   console.log("This is the query -> ");
@@ -294,8 +338,29 @@ app.get('/phoneinfo',function(req,res) {
    });
 });
 
+app.get('/brands',function(req,res){
+    QueryString='select distinct(company) from data;';
+/*connection.query((QueryString),function(err,rows,field){
+if(err) throw err;
+console.log(rows[0].company);
 
+});*/
+    sequelize.query(QueryString).spread(function(studentsdata,metadata){
+      res.setHeader("Access-Control-Allow-Origin","*");
+      console.log(studentsdata[0].company);
+      res.render('brands.html',{CompanyData:studentsdata})
+    });
+});
+
+app.get('/matrix',function(req,res){
+    QueryString="select * from data where company ='"+req.query.brand+ "' order by price;";
+    sequelize.query(QueryString).spread(function(studentsdata,metadata){
+      res.setHeader("Access-Control-Allow-Origin","*");
+      res.render('matrix.html',{MatrixData:studentsdata})
+    });
+});
 
 var server=app.listen(3000,function(){
 console.log("We have started our server on port 3000");
 });
+
