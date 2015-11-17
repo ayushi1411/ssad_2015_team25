@@ -2,7 +2,7 @@ var express=require('express');
 var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('phones', 'root', 'helloworld', {
+var sequelize = new Sequelize('data', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -15,8 +15,8 @@ var sequelize = new Sequelize('phones', 'root', 'helloworld', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'helloworld',
-  database : 'phones'
+  password : 'root',
+  database : 'data'
 });
 
 connection.connect();
