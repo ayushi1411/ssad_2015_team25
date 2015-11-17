@@ -2,7 +2,7 @@ var express=require('express');
 var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('data', 'root', 'risa1996', {
+var sequelize = new Sequelize('data', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -15,11 +15,12 @@ var sequelize = new Sequelize('data', 'root', 'risa1996', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'risa1996',
+  password : 'root',
   database : 'data'
 });
 
 connection.connect();
+app.use(express.static('public')); // serving static files in express.
 
 app.set('views',__dirname + '/views');
 app.use(express.static(__dirname + '/JS'));
@@ -33,17 +34,61 @@ res.render('index.html');
 
 // autocomplete feature implementation
 app.get('/search',function(req,res){
-QueryString = 'select * from data where company like "' + req.query.key + '%";'; 
-connection.query(QueryString, function(err, rows, fields) {
-	  if (err) throw err;
-    var data=[];
-    for(i=0;i<rows.length;i++)
-      {
-        data.push(rows[i].company);
+
+  
+  var param_p = ['company', 'model','color'];
+  var exp_words = ['with', 'having', 'have', 'of', 'not', "don't", 'for', 'amount', 'price', 'cost', 'and',
+                   'lessthan', 'greaterthan', 'between', 'under', 'equal', 'below', 'above', 'phone', 'company',
+                    'rs', 'color', 'coloured', 'screen', 'screensize'];
+
+  console.log("query string");
+  console.log(req.query.key);
+  var arr = req.query.key.toString().split(/\b\s+/);
+
+  var len = arr.length;
+  var last_word = arr[len-1].toLowerCase();
+
+  var data = [];
+  var str = '^' + last_word + '.*';
+
+  console.log('regex');
+  console.log(str);
+  var re = new RegExp(str, "g");
+
+  for(var i=0; i<exp_words.length; i++)
+  {
+    if(re.test(exp_words[i]))
+      data.push(exp_words[i]);
+  }
+
+
+// partially manipulating asynchronous callback by creating partial function for each turn of the loop
+  for(var i=0; i<param_p.length; i++) (function(i){
+   var  qstr='select distinct '  + param_p[i] + ' from data where ' + param_p[i] + ' like "' + last_word + '%";'; 
+
+    connection.query(qstr, function(err, rows, fields) {
+
+    if (err) throw err;
+   
+
+    for(var j=0; j<rows.length; j++)
+     {
+ 
+       var temp2 = qstr.split(/\b\s+/);
+       console.log(temp2[2]);
+       console.log(rows[j][temp2[2]]);
+       data.push(rows[j][temp2[2]]);
+      
       }
-      res.end(JSON.stringify(data));
-	});
+    
+    res.end(JSON.stringify(data));
+  
+  });
+  }) (i);
+
 });
+
+
 
 app.get('/getcompanydata',function(req,res) {
  //   console.log("This is the query -> ");
@@ -54,7 +99,7 @@ app.get('/getcompanydata',function(req,res) {
     
   // Normalising the entire search query and converting it into small letters for structured search.  
     for (var i = 0; i < arr.length; i++) {   
-      arr.push=arr[i].toLowerCase();
+      arr[i]=arr[i].toLowerCase();
     };
 
  
@@ -75,7 +120,7 @@ app.get('/getcompanydata',function(req,res) {
     var optr=0;
 
     // dictionary consisting of different operators and their corresponding "meanings" as key-value pairs 
-    var opt1 = {"having": " = ", "have": " = ", "lessthan" : " < " , "greaterthan": " > ", 
+    var opt1 = {"having": " = ", "have": " = ", "lessthan" : " < " ,"less" : " < " , "greaterthan": " > ","greater than": " > ", 
                   "not":" != ", "above": " > ", "below": " < ", "under": " < ", "equal": " ="};
     
     // dictioanry of operators to be used in case of presence of negation keywords in the query.
