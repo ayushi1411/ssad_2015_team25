@@ -2,7 +2,7 @@ var express=require('express');
 var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('phones', 'root', 'helloworld', {
+var sequelize = new Sequelize('data', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -15,11 +15,12 @@ var sequelize = new Sequelize('phones', 'root', 'helloworld', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'helloworld',
-  database : 'phones'
+  password : 'root',
+  database : 'data'
 });
 
 connection.connect();
+app.use(express.static('public')); // serving static files in express.
 
 app.set('views',__dirname + '/views');
 app.use(express.static(__dirname + '/JS'));
@@ -98,7 +99,7 @@ app.get('/getcompanydata',function(req,res) {
     
   // Normalising the entire search query and converting it into small letters for structured search.  
     for (var i = 0; i < arr.length; i++) {   
-      arr.push=arr[i].toLowerCase();
+      arr[i]=arr[i].toLowerCase();
     };
 
  
@@ -119,7 +120,7 @@ app.get('/getcompanydata',function(req,res) {
     var optr=0;
 
     // dictionary consisting of different operators and their corresponding "meanings" as key-value pairs 
-    var opt1 = {"having": " = ", "have": " = ", "lessthan" : " < " , "greaterthan": " > ", 
+    var opt1 = {"having": " = ", "have": " = ", "lessthan" : " < " ,"less" : " < " , "greaterthan": " > ","greater than": " > ", 
                   "not":" != ", "above": " > ", "below": " < ", "under": " < ", "equal": " ="};
     
     // dictioanry of operators to be used in case of presence of negation keywords in the query.
