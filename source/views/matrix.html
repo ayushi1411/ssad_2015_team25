@@ -11,67 +11,80 @@
 			width: 60%;
     		border: thin solid black;
     		border-collapse: collapse;
+    		text-align: center;
 		}
 		#box-id{
 			border: thin solid black;
 			text-align: center;
 		}
+		#MatrixSpec{
+			font-size: 120%;
+			font-weight: bold;
+			text-align: center;
+		}
+		body {
+		    background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
+		    background-repeat: no-repeat;
+		    background-attachment: fixed;
+		    background-size: 1900px 1400px;
+		} 
+		table {
+		    width: 50%;
+		    margin-left: auto;
+		    margin-right: auto;
+		}
+
 		</style>
 </head>
+
 <body>
-<h1>Choice matrix</h1>
-	<div id="displaymatrix">
-</div>
-	<script type="text/javascript">
+	<div id="MatrixSpec"></div>
+	<div id="displaymatrix"></div>
+
+<script type="text/javascript">
+	function showIt(data){
+			document.getElementById("displaymatrix").innerHTML = data;
+	}
+	function goBack() {
+	    window.history.back();
+	}
+
+	function CompanyName(input){
+			document.getElementById("MatrixSpec").innerHTML = input;
+	}
 	function check(ele) {
 		console.log("hello");
 		console.log(ele.name);
 		var elements=document.getElementsByName(ele.name);
 		var i;
-		for(i=0;i<elements.length;i++)
-		{
-			if(elements[i].type=='radio')
-			{
+		for(i=0;i<elements.length;i++){
+			if(elements[i].type=='radio'){
 				elements[i].checked=false;
 			}
 		}
 	}
 
+	 var data = <%- JSON.stringify(MatrixData) %>
+	 console.log(data)
+	 var lowp=data[0].price;
+	 var highp=data[data.length-1].price;
+	 var range=(highp-lowp)/5;
+	 var myString="<h4>Features</h4>";
+	 myString = myString+"<table id='table-id'><th id='box-id'>Price</th>";
+	 for(var i=1;i<=5;i++){
+	 	var low=lowp;
+	 	var high=lowp+(i*range);
 
-	</script>
-	<script>
-function goBack() {
-    window.history.back();
-}
-</script>
-<script type="text/javascript">
-	function showIt(data){
-			document.getElementById("displaymatrix").innerHTML = data;
+	 	var temp="<td id='box-id'><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>";
 
-		} 
-			 var data = <%- JSON.stringify(MatrixData) %>
-
-			 console.log(data)
-			 var lowp=data[0].price;
-			 var highp=data[data.length-1].price;
-			 var range=(highp-lowp)/5;
-
-			 var myString="<h4>Features</h4>";
-			 myString = myString+"<table id='table-id'><th id='box-id'>Price</th>";
-			 for(var i=1;i<=5;i++)
-			 {
-			 	var low=lowp;
-			 	var high=lowp+(i*range);
-
-
-			 	var temp="<td id='box-id'><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>"
-
-			 
-						myString= myString + temp;
-					};
-					myString=myString+"</table>";
-					myString=myString+"<button  name='price' onclick='check(this);'>uncheck options</button>";
-					showIt(myString);
+		myString= myString + temp;
+	};
+	myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></table>";
+	showIt(myString);
+	var url = window.location.href;
+	var CompName = url.split("=");
+	var str2 = "Choice Matrix for " + CompName[1];
+	CompanyName(str2);
 </script>
 	
 <br><br>
