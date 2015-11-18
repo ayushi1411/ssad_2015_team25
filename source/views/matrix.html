@@ -6,6 +6,17 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script  type="text/javascript" src="typeahead.min.js"></script>
+		<style type="text/css">
+		#table-id{
+			width: 60%;
+    		border: thin solid black;
+    		border-collapse: collapse;
+		}
+		#box-id{
+			border: thin solid black;
+			text-align: center;
+		}
+		</style>
 </head>
 <body>
 <h1>Choice matrix</h1>
@@ -45,70 +56,25 @@ function goBack() {
 			 var highp=data[data.length-1].price;
 			 var range=(highp-lowp)/5;
 
-
-			 var myString = "<table><tr><th>Features</th></tr><th>price</th>";
+			 var myString="<h4>Features</h4>";
+			 myString = myString+"<table id='table-id'><th id='box-id'>Price</th>";
 			 for(var i=1;i<=5;i++)
 			 {
 			 	var low=lowp;
 			 	var high=lowp+(i*range);
 
 
-			 	var temp="<td><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>"
+			 	var temp="<td id='box-id'><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>"
 
 			 
 						myString= myString + temp;
 					};
-					myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></tr></table";
+					myString=myString+"</table>";
+					myString=myString+"<button  name='price' onclick='check(this);'>uncheck options</button>";
 					showIt(myString);
 </script>
 	
-	<!--<table>
-		<tr>
-		<th>Features</th>
-		</tr>
-		<tr>
-		<th>Screen Size</th>
-		<td>
-		<input type="radio" name="screen size" value="4.0" id="4inch">4.0"
-		</td>
-		<td>
-		<input type="radio" name="screen size" value="4.7">4.7"
-		</td>
-		<td>
-		<input type="radio" name="screen size" value="5.0">5.0"
-		</td>
-		<td>
-		<input type="radio" name="screen size" value="5.7">5.7"
-		</td>
-		<td>
-		<button  name="screen size" onclick="check(this);">uncheck options</button>
-		</td>
-		</tr>
-
-		<tr>
-		<th>Price</th>
-		<td>
-		<input type="radio" name="price" value="<10000">&lt10000
-		</td>
-		<td>
-		<input type="radio" name="price" value="<20000">&gt 10000 &lt 20000
-		</td>
-		<td>
-		<input type="radio" name="price" value="<30000">&gt 20000 &lt 30000
-		</td>
-		<td>
-		<input type="radio" name="price" value=">30000">&gt 30000
-		</td>
-		<td>
-		<button  name="price" onclick="check(this);">uncheck options</button>
-		</td>
-		</tr>
-
-	</table>-->
-
 <br><br>
-			<button name="back" onclick="goBack();">back </button>
-
-
+	<button name="back" onclick="goBack();">Back </button>
 </body>
 </html>
