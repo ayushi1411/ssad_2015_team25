@@ -39,10 +39,10 @@ app.get('/search',function(req,res){
   var param_p = ['company', 'model','color'];
   var exp_words = ['with', 'having', 'have', 'of', 'not', "don't", 'for', 'amount', 'price', 'cost', 'and',
                    'lessthan', 'greaterthan', 'between', 'under', 'equal', 'below', 'above', 'phone', 'company',
-                    'rs', 'color', 'coloured', 'screen', 'screensize'];
+                    'rs', 'color', 'coloured', 'screen', 'screensize', 'or'];
 
-  console.log("query string");
-  console.log(req.query.key);
+ // console.log("query string");
+ // console.log(req.query.key);
   var arr = req.query.key.toString().split(/\b\s+/);
 
   var len = arr.length;
@@ -51,8 +51,8 @@ app.get('/search',function(req,res){
   var data = [];
   var str = '^' + last_word + '.*';
 
-  console.log('regex');
-  console.log(str);
+ // console.log('regex');
+ // console.log(str);
   var re = new RegExp(str, "g");
 
   for(var i=0; i<exp_words.length; i++)
@@ -64,7 +64,7 @@ app.get('/search',function(req,res){
 
 // partially manipulating asynchronous callback by creating partial function for each turn of the loop
   for(var i=0; i<param_p.length; i++) (function(i){
-   var  qstr='select distinct '  + param_p[i] + ' from data where ' + param_p[i] + ' like "' + last_word + '%";'; 
+    var  qstr='select distinct '  + param_p[i] + ' from data where ' + param_p[i] + ' like "' + last_word + '%";'; 
 
     connection.query(qstr, function(err, rows, fields) {
 
@@ -75,8 +75,8 @@ app.get('/search',function(req,res){
      {
  
        var temp2 = qstr.split(/\b\s+/);
-       console.log(temp2[2]);
-       console.log(rows[j][temp2[2]]);
+   //    console.log(temp2[2]);
+    //   console.log(rows[j][temp2[2]]);
        data.push(rows[j][temp2[2]]);
       
       }
@@ -91,17 +91,6 @@ app.get('/search',function(req,res){
 
 
 app.get('/getcompanydata',function(req,res) {
- //   console.log("This is the query -> ");
-   // console.log(req.query.q);
-  
-  // tokenizing the input string(user query) using whitespaces in an array of strings "arr"
-    var arr = req.query.q.toString().split(/\b\s+/);
-    
-  // Normalising the entire search query and converting it into small letters for structured search.  
-    for (var i = 0; i < arr.length; i++) {   
-      arr[i]=arr[i].toLowerCase();
-    };
-
  
  // list of "expected words" as parameters' name in the query
     var param_phone = ['phone', 'mobile', 'company'];
@@ -116,19 +105,23 @@ app.get('/getcompanydata',function(req,res) {
                        'Asus', 'HTC', 'Google', 'Spice', 'Nokia'];
   	var color_list = ['black', 'white', 'blue', 'pink', 'red', 'grey'];
 
-    // variable to check whether the operator is explicitly mentioaned in the query or not.
+    // variable to check whether the operator is explicitly mentioned in the query or not.
     var optr=0;
 
     // dictionary consisting of different operators and their corresponding "meanings" as key-value pairs 
     var opt1 = {"having": " = ", "have": " = ", "lessthan" : " < " ,"less" : " < " , "greaterthan": " > ","greater than": " > ", 
-                  "not":" != ", "above": " > ", "below": " < ", "under": " < ", "equal": " ="};
+                  "not":" != ", "above": " > ", "below": " < ", "under": " < ", "equal": " =", "of": "=" };
     
     // dictioanry of operators to be used in case of presence of negation keywords in the query.
     var opt2 = {"having": " != ", "have": " != ", "lessthan" : " >= " , "greaterthan": " <= ", 
-                  "not":" != ", "above": " <= ", "below": " >= ", "under": " >= ", "equal": " !="};
+                  "not":" != ", "above": " <= ", "below": " >= ", "under": " >= ", "equal": " !=", "of": "!=" };
    
+
+   // global_query that will fetch the result from the database.
+    var global_string = ""; 
+
    // initial query
-  	var q_string='select * from data where ';
+  	var temp_str='select * from data where  company = "Samsung" and';
 
     // "flag" variable is set to 1 when the first parameter is identified in the query.
   	var flag=0;
@@ -136,15 +129,97 @@ app.get('/getcompanydata',function(req,res) {
     // "temp" variable is set to 1 when any word present in the query is identified as a parameter.
     var temp=0;
 
+    // length of input string
+    var len_inputstr=req.query.q.toString().length;
 
-      // iterating over the entire in a word by word fashion and identifying that word as a parameter
+    // making a copy of the input string .
+    var input_str=req.query.q.toString().slice(0, len_inputstr+1);
+    
+	// local variable "count" to validate the string concatinaton operations. 
+    var count =0;
+
+	// processing the input query
+    while(input_str!="")
+    {	
+
+    	// removing the last four words ( keyword "and" , parameter, operator, value) from the input query as 
+    	
+// explanation:
+    	// they are associated with the "or" keyword.
+    	// example if the user types: "samsung phone with black color or white color",
+    	// then the temp_str till first iteration will be " select * from <tablename> where company="Samsung" and 
+    	// color = 'black' ";
+    	// now we need to form the second query using the string: "select * from <tablename> where company="Samsung" "
+    	// and then append the additional properties to it, to make it as "select * from <tablename> where company="Samsung"
+    	// and color = 'white' ";".
+
+    	// removing trailing whitespaces from the temoporary string
+    	temp_str = temp_str.replace(/\s*$/,"");
+
+    	// remove last word four times
+    	for(var g=0; g<4; g++)
+    		remove_Lastword();
+		
+    	// if it is not the first query, append "union" after the query made till date.
+    	if(count!=0)
+    		global_string = global_string.concat(' union ');
+  
+
+    	// check the position where the keyword "or" occurs.
+    	var index = input_str.indexOf(" or");
+
+    	// if "or" keywords occurs.    	
+    	if(index!=-1)
+    	{
+
+    		// curr_str is the intial part of the input string until the keyword "or" occurs, i.e. the first part of input 
+    		// string after after splitting the string using "or" as keyword .
+    		var curr_str = input_str.substring(0, index);
+
+    		// updating the input string , i.e. removing the intial part of the input string and
+    		// considering only the part arter the keyword "or".
+    		input_str = input_str.slice(index+3);
+
+    		// removing whitespaces from the beginning of the string.
+    		input_str = input_str.replace(/^\s*/,"");
+
+    		// tl; dr
+    		// curr_str is the string of which we are currently running the query and "input_str" is the left out string 
+    		// after removing the "curr_string" from the input string.
+    	}
+
+    	// if "or" keyword doesn't occur.
+    	else
+    	{
+    		var len_Inputstr=input_str.length;
+    		var curr_str= input_str.slice(0, len_Inputstr+1);
+
+    		// since no "or" keyword identified, the input string now becomes empty.
+    		input_str="";
+    	}
+
+    	
+    
+    	// initializing an array "arr" that will hold the input string in a tokenized manner.
+    	var arr = "";
+
+    	// tokenizing the current string(user query) using whitespaces in an array of strings "arr"
+    	arr = curr_str.split(/\b\s+/);
+
+    	// Normalising the entire search query and converting it into small letters for structured search.  
+    	for (var i = 0; i < arr.length; i++) {   
+      		arr[i]=arr[i].toLowerCase();
+    	};
+
+
+      // iterating over the entire array in a word by word fashion and identifying that word as a parameter
   		for(var i=0; i<arr.length; i++)
   		{
           temp=0;
 
           var start_index=i-2 ;
           start_index=Math.max(start_index, 0);
-          var end_index=Math.min(i+4, arr.length);
+          var end_index=Math.min(i+3, arr.length);
 
           // "start_index" and" end_index" are the variables that bound the indices around the parameter,
           // in which the "values" and the "operators" will be looked for.
@@ -165,8 +240,17 @@ app.get('/getcompanydata',function(req,res) {
 
   		}
 
+  		// appending temp_str string into the global_string
+  		global_string = global_string.concat(temp_str);
+
+  		console.log("global string in the end");
+  		console.log(global_string);
+  		count++;
+
+  	}
+
       // concatinating the query string with a semicolon in the end.
-  	q_string=q_string.concat(";");
+  	global_string=global_string.concat(";");
 
 
     // functions that gets invoked , whenever we need to check a word for a parameter.
@@ -181,13 +265,12 @@ app.get('/getcompanydata',function(req,res) {
           // incase the word is a parameter
          if(param_list[j].toLowerCase().localeCompare(word)==0)
          {         
-      //    console.log("parameter");
-        //  console.log(param_list[0]);
-          temp=1;
+ 
+           temp=1;
 
 
-          if(flag==1)
-            q_string=q_string.concat(" and ");
+           if(flag==1)
+          	 temp_str=temp_str.concat(" and ");
 
 
            // calling the helper functions "phone_query" and "price_query" to check
@@ -216,7 +299,7 @@ app.get('/getcompanydata',function(req,res) {
       {
         var lim=arr.indexOf("phone");
         end_index=lim;
-        console.log(lim);
+    
       }  
      
 
@@ -225,11 +308,18 @@ app.get('/getcompanydata',function(req,res) {
       check_opt( start_index, end_index, parmt);
   		for(var w=start_index; w<end_index; w++)
   		{
+
+  			// fr is a local variable that checks whether any value corresponding to the parameter was found
+  			// in the query or not.
   			var fr=0;
   			for(var fe=0; fe<list.length; fe++)
   			{
+
+  				console.log(list[fe]);
   				if(arr[w].toLowerCase().localeCompare(list[fe].toLowerCase())==0)
   				{
+  					console.log("parameter value");
+  					console.log(arr[w]);
   					fr=1;
   					break;
   				}
@@ -239,21 +329,25 @@ app.get('/getcompanydata',function(req,res) {
   		}
   	
 
-
+  		// if operator is already concatenated (using the "check_opt" function, 
+  		// then just concatenate the value in the query string)
   		if(w!=end_index && optr==1)
-  			q_string=q_string.concat("'", list[fe], "'");
-      else if(w!=end_index)
-        q_string=q_string.concat(parmt, " =", "'", list[fe], "' ");
+  			temp_str=temp_str.concat(" '", list[fe], "'");
+  		
+  		// if(no operator was found for the parameter, smply append and "=" in the query)
+        else if(w!=end_index)
+        	temp_str=temp_str.concat(" ", parmt, " = ", " '", list[fe], "' ");
+
+        // if no value specified for the given parameter, then just assure that the given parameter shouldn't be null
   		else
-  			q_string=q_string.concat(parmt, "!= ", '""', " ");
+  			temp_str=temp_str.concat(" " ,parmt, " != ", '""', " ");
   	}  
 
 
+  	// function to get the "numeric" values for example, values for parameters like "price", "screensize", etc.
   	function price_query(start_index, end_index, parmt){
 
-      check_opt( start_index, end_index, parmt);
-      console.log(q_string);
-      console.log(optr);
+        check_opt( start_index, end_index, parmt);
   		for(var w=start_index; w<end_index;w++)
   			{
   				var fr=0;
@@ -267,18 +361,24 @@ app.get('/getcompanydata',function(req,res) {
   				}
   			}
 
-      if(w!=end_index && optr==1)
-        q_string=q_string.concat( parseInt(arr[w]));
-      else if(w!=end_index)
-        q_string=q_string.concat(parmt, " = ", parseInt(arr[w]));
-  		else if(w==end_index && optr!=1)
-  				q_string=q_string.concat(parmt, " ", "!= ", 0, " ") ;
-      else 
-      {
-        
-          q_string = q_string.substring(0, q_string.length - 3);
-          q_string=q_string.concat( " = ", 0, " ") ;
-      }
+
+  			//same logic as given in the phone_query function above.
+     		 if(w!=end_index && optr==1)
+        		temp_str=temp_str.concat( " " , parseInt(arr[w]));
+     		 else if(w!=end_index)
+        		temp_str=temp_str.concat(parmt, " = ", parseInt(arr[w]));
+  	  		 else if(w==end_index && optr!=1)
+  				temp_str=temp_str.concat(parmt, " ", "!= ", 0, " ") ;
+      
+      		// incase a negation is specifed in the query, then make the values of that attribute as zero.
+      		// example, input query: "samsung phone with no camera".
+      		// The query string will be: "select * from <tablename> where company='Samsung' and camera=0 ".
+      		else 
+      		{
+      			// remove the already appended "!=" from the query formed previously.
+          		temp_str = temp_str.substring(0, temp_str.length - 3);
+          		temp_str = temp_str.concat( " = ", 0, " ") ;
+      		}
     
   	}
 
@@ -290,7 +390,8 @@ app.get('/getcompanydata',function(req,res) {
       {
 
         // if there is a sign of negation in the query, operate on "opt2", otherwise operate on "opt1".
-        if((arr[w].toLowerCase().localeCompare("don't")==0) || (arr[w].toLowerCase().localeCompare("not")==0) || (arr[w].toLowerCase().localeCompare("no")==0)){
+        if((arr[w].toLowerCase().localeCompare("don't")==0) || (arr[w].toLowerCase().localeCompare("not")==0) || (arr[w].toLowerCase().localeCompare("no")==0))
+        {
           
           // checking for the word after the negation word.
           // if no word is present it is simplt assumed to be "not equal to".
@@ -310,13 +411,26 @@ app.get('/getcompanydata',function(req,res) {
       if(w!=end_index)
       {
         optr=1;
-        q_string=q_string.concat(parmt, operator) ;
+        temp_str=temp_str.concat(parmt, " " ,operator) ;
       }
     
     }
 
+
+
+    // function that removes last word from a string.
+    function remove_Lastword()
+    {
+    	// get the index of last whitespace and chop off the rest part of the string, i.e. by this technique,
+    	// the last word in "temp_str" will get removed .
+
+    	var lastIndex = temp_str.lastIndexOf(' ');
+    	temp_str = temp_str.substring(0, lastIndex);
+    	temp_str = temp_str.replace(/\s*$/,"");
+    }
+
   	// executing the query
-    sequelize.query(q_string).spread(function(studentsdata,metadata)
+    sequelize.query(global_string).spread(function(studentsdata,metadata)
     {
        res.setHeader("Access-Control-Allow-Origin", "*");
        res.json({StudentsDataOut:studentsdata})
