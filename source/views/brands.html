@@ -12,38 +12,52 @@
 				font-size: 150%;
 				border: thin solid black;
 				border-collapse: collapse;
+				background-color: #3377ff;
+				text-align: center;
 		}
 		#row-id{
 			font-size: 150%;
 			border: thin solid black;
 			text-align: center;
 			border-collapse: collapse;
+			background-color: #ccddff;
+		}
+		a{
+			text-decoration:none;
+		}
+		body {
+  			background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
+    		background-repeat: no-repeat;
+    		background-attachment: fixed;
+    	    background-size: 1900px 1400px;
+		} 
+		table {
+		    width: 50%;
+		    margin-left: auto;
+		    margin-right: auto;
 		}
 	</style>	
 </head>
 <body>
-<div id="branddisplay">
-</div>
-	<script type="text/javascript">
+<div id="branddisplay"></div>
+<script type="text/javascript">
 
-		function showIt(data){
-			document.getElementById('branddisplay').innerHTML = data;
-		} 
-			 var data = <%- JSON.stringify(CompanyData) %>
+	function showIt(data){
+		document.getElementById('branddisplay').innerHTML = data;
+	} 
 
-			 console.log(data)
+	 var data = <%- JSON.stringify(CompanyData) %>
 
-			 var myString = "<table id='table-id'><tr><th>Brands Available</tr></th>";
-			 for (var i = 0; i < data.length; i++) {
-					var company = data[i].company;
-					
-					
-							var temp="<tr><td id='row-id'><a href=http://127.0.0.1:3000/matrix?brand="+company+">"+company+"</a></td></tr>";
-						myString= myString + temp;
-					};
-					myString=myString+"</table>"
-					showIt(myString);
-	</script>
-
+	 console.log(data)
+	 var myString = "<table id='table-id'><tr><th>Brands Available</tr></th>";
+	for (var i = 0; i < data.length; i++) {
+			var company = data[i].company;
+			
+			var temp="<tr><td id='row-id'><a href=http://127.0.0.1:3000/matrix?brand="+company+">"+company+"</a></td></tr>";
+			myString= myString + temp;
+	};
+	myString=myString+"</table>"
+	showIt(myString);			
+</script>
 </body>
 </html>
