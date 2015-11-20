@@ -7,6 +7,10 @@
 
 </head>
 	<body>
+
+	<div class="top">
+	<p></p>
+	</div>
 	<div id='phonedisplay'>
 	Phone info goes here
 	</div>
@@ -14,6 +18,7 @@
 	<script type="text/javascript">
 
 		function showIt(data){
+			console.log(data);
 			document.getElementById('phonedisplay').innerHTML = data;
 
 		} 
@@ -28,13 +33,17 @@
 					var model = data[i].model;
 					var screen_size = data[i].screen_size;
 					var price = data[i].price;
-					var temp = "<img src=http://localhost:3000/images/1.jpeg" + " "+ "align=left" + " " +	  "alt=No" +
-								"image available> "+ "</br></br></br>"+"<table class=tab" + ">"+
-								"<tr><th>Phone Details:</th></tr>"+
-								"<tr><td>Company: "+ company + "</td></tr>"+
-								"<tr><td>Model: "+ model + "</td></tr>"+
-								"<tr><td>Screen size: "+ screen_size + "</td></tr>"+
-								"<tr><td>Price: "+ price + "</td></tr>"+"</table>"
+					var color = data[i].color;
+					var temp = "<div id=col1> <img src=http://localhost:3000/images/"+phoneid+".jpeg" + " "+ "align=left" + " " +	  "alt=No" +
+								"image available></div><div id=col2><p></p></div><div id=col3 ><table class=tab" + ">"+
+								"<tr><th class=heading1>Phone Details:</th></tr>"+
+								"<tr><td><b>Company: "+ company + "</b></td></tr>"+
+								"<tr><td><b>Model: "+ model + "</b></td></tr>"+
+								"<tr><td><b>Screen size: "+ screen_size + "</b></td></tr>"+
+								"<tr><td><b>Price: "+ price + " INR</b></td></tr>"+
+								"<tr><td><b>Color: "+ color + "</b></td></tr>"+"</table></div>"+ " "
+
+
 								;
 						myString= myString + temp;
 					};
@@ -42,22 +51,81 @@
 
 		
 		</script>
-		<style type="text/css">
-/*		body {
-			padding: 300px;
-			position: absolute;
-			 background-size: 1300px 1200px;
-			 background-repeat: no-repeat;
-  		/*	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color:black; 
- 			background-image: url("https://www.walldevil.com/wallpapers/a49/thumb/wallpaper-desktop-backgrounds-minimalistic-blue-simple-wallpapers-background.jpg");
-
-		} */
+		<style type="text/css">	
 
 		img
 
-		tr {
-			text-align: left;
+		th {
+			text-decoration: underline;
+		}
+		td {
+			text-align: center;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		.heading1{
+			text-decoration: underline;
+		}
+
+		.top{
+			height: 70px;
+			background-color: purple;
+		}
+
+
+
+		#phonedisplay { 
+ 		   width: 800px;
+    		margin: 0 auto;
+		}
+
+		#col1    {
+
+			display: inline-block;
+    		margin-left: auto;
+    		margin-right: auto;  
+    		vertical-align: middle;
+    		width: 350px;
+    		height: 500px;
+    		background: white; 
+    		float: left;
+    		text-align: center;
+    		box-shadow: 0px 8px 10px gray, 
+       			 -7px 8px 10px gray, 7px 8px 10px gray;
+		}
+
+		div img{
+			position: relative;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		#col2    {
+    		width: 50px;
+    		height: 500px;
+    		background: #e5ffe5 ; 
+    		float: left;
+    	/*	box-shadow: 0px 8px 10px gray, 
+       			 -4px 8px 10px gray, 4px 8px 10px gray;  */
+    
+		}
+
+
+		#col3  {
+			text-align: center;
+
+			margin-left: 100px;
+    		width: 500px;
+    		background: #ffffff;
+    		height: 500px;
+    		margin-left: 200px;
+    		box-shadow: 0px 8px 10px gray, 
+       			 -7px 8px 10px gray, 7px 8px 10px gray;
+   
+    		  
+		}
+
+		body {
+			background-color: #e5ffe5;
 		}
 		</style>
 	</body>
