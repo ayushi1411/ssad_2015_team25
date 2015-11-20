@@ -30,6 +30,10 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 app.get('/',function(req,res){
+res.render('start.html');
+});
+
+app.get('/query',function(req,res){
 res.render('index.html');
 });
 
