@@ -87,16 +87,62 @@
 	 }
 
 	 var myString="<h4>Features</h4>";
-	 myString = myString+"<table id='table-id'><th id='box-id'>Price</th>";
+	 myString = myString+"<table id='table-id'><th id='box-id'>price</th>";
+
 	 for(var i=1;i<=5;i++){
-	 	var low=lowp;
-	 	var high=lowp+(i*range);
+	 		var low=lowp;
+	 		var high=lowp+(i*range);
 
-	 	var temp="<td id='box-id'><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>";
+	 		var temp="<td id='box-id'><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>";
 
-		myString= myString + temp;
+			myString= myString + temp;
+		};
+		myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></table>";
+
+	 for(var j=3;j<cols.length;j++)
+	 {
+		var values=new Array();
+		var temp=new Array();
+		for(var i=0;i<data.length;i++)
+		{
+			temp.push(data[i][cols[j]]);
+		}
+		temp.sort();
+		temp.sort(function(a,b){return a-b;});
+
+		//temp.sort();
+
+		console.log(temp);
+		for(var i=0,k=0;i<temp.length;i++)
+		{
+			if(i==0 || temp[i]!=temp[i-1])
+			{
+				values[k]=temp[i];
+				k++;
+			}
+		}
+		console.log(values);
+
+
+
+	 	if(cols[j]!='price')
+	 	{
+		 myString = myString+"<table id='table-id'><th id='box-id'>"+cols[j]+"</th>";
+		 for(var i=0;i<=5;i++){
+
+		 	var val;
+		 	if(i<values.length)
+		 		val=values[i];
+		 	else
+		 		val=values[values.length-1];
+	 		var temp="<td id='box-id'><input type='radio' name='"+cols[j]+"' value='"+val+"'>"+val+"</td>";
+
+			myString= myString + temp;
+		};
+			myString=myString+"<td><button  name='"+cols[j]+"' onclick='check(this);'>uncheck options</button></td></table>";
+		}		
+
 	};
-	myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></table>";
 	showIt(myString);
 	var url = window.location.href;
 	var CompName = url.split("=");
