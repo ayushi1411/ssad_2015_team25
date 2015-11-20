@@ -20,7 +20,7 @@
 			var model ={};
 			var text = document.getElementById('myInput').value;
 			$.ajax({
-				url: "http://127.0.0.1:3000/getcompanydata?q=" + text,
+				url: "http://localhost:3000/getcompanydata?q=" + text,
 				data:model,
 				dataType: "json",
 				success : function (data) {
@@ -35,7 +35,7 @@
 						var screen_size=data[i].screen_size;
 						var price=data[i].price
 					///	var color=data[i].color
-						var temp = "<a href = http://127.0.0.1:3000/phoneinfo?pid="+ phoneid + '>' +company +'&nbsp&nbsp&nbsp' + model + '&nbsp&nbsp&nbsp' +"</a></br></br>";
+						var temp = "<a href = http://localhost:3000/phoneinfo?pid="+ phoneid + '>' +company +'&nbsp&nbsp&nbsp' + model + '&nbsp&nbsp&nbsp' +"</a></br></br>";
 						var COUNT="Results Found: " + data.length+"</br>";
 						myString= myString + temp;
 					};
@@ -166,23 +166,23 @@
 </head>
 <body>
 	<div class="page-header">
-		<img class ="search" src="http://127.0.0.1:3000/images/logo.gif" />
+		<img class ="search" src="http://localhost:3000/images/logo.gif" />
 	</div>
 	<!-- <div id="wrapper"> -->
 	<div class="bs-example">
 		<table>
 		<tr>
 		   <td><input id="myInput" type="text" name="typeahead" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="Type your Query"></td>
-			<td><input id="button" placeholder="Submit" name="submit" class="tt-submit" type="image" src="http://127.0.0.1:3000/images/images.jpeg" onclick="getData()"></td>
+			<td><input id="button" placeholder="Submit" name="submit" class="tt-submit" type="image" src="http://localhost:3000/images/images.jpeg" onclick="getData()"></td>
 		    <td id="Counts"></td>
 		</tr>
 		</table>
 	</div>
 
 	<div id="imagew" > 	
-	<img id="i1" src= "http://127.0.0.1:3000/images/i1.gif"/> 
-	<img id="i2" src= "http://127.0.0.1:3000/images/i2.gif"/> 
-	<img id="i3" src= "http://127.0.0.1:3000/images/i3.gif"/> </div>
+	<img id="i1" src= "http://localhost:3000/images/i1.gif"/> 
+	<img id="i2" src= "http://localhost:3000/images/i2.gif"/> 
+	<img id="i3" src= "http://localhost:3000/images/i3.gif"/> </div>
 <!-- <div id="Counts">
 
 </div> -->
