@@ -8,22 +8,25 @@
 	<script  type="text/javascript" src="typeahead.min.js"></script>
 	<style type="text/css">
 		#table-id{
-				width: 20%;
+				width: 60%;
 				font-size: 150%;
-				border: thin solid black;
-				border-collapse: collapse;
-				background-color: #3377ff;
+				border-collapse: collapse;				
 				text-align: center;
-		}
-		#row-id{
-			font-size: 150%;
-			border: thin solid black;
-			text-align: center;
-			border-collapse: collapse;
-			background-color: #ccddff;
 		}
 		a{
 			text-decoration:none;
+		}
+		h3{
+			text-align: center;
+		}
+		h3 span{
+			background-color: #ccddff;
+		}
+		#row-id{
+			font-size: 150%;
+			text-align: center;
+			font-family: Georgia, Garamond, serif;
+			border-collapse: collapse;
 		}
 		body {
   			background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
@@ -35,29 +38,22 @@
 		    width: 50%;
 		    margin-left: auto;
 		    margin-right: auto;
-		}
-	</style>	
+			position: absolute;
+			top: 45%;
+			left: 20%;
+		}			
+	</style>		
 </head>
 <body>
-<div id="branddisplay"></div>
+<div id="tabs"></div>
 <script type="text/javascript">
-
 	function showIt(data){
-		document.getElementById('branddisplay').innerHTML = data;
-	} 
+		document.getElementById('tabs').innerHTML = data;
+	}	
 
-	 var data = <%- JSON.stringify(CompanyData) %>
-
-	 console.log(data)
-	 var myString = "<table id='table-id'><tr><th>Brands Available</tr></th>";
-	for (var i = 0; i < data.length; i++) {
-			var company = data[i].company;
-			
-			var temp="<tr><td id='row-id'><a href=http://localhost:3000/matrix?brand="+company+">"+company+"</a></td></tr>";
-			myString= myString + temp;
-	};
-	myString=myString+"</table>"
-	showIt(myString);			
+	var myString = "<table id='table-id'><tr><td id='row-id'><a href='http://localhost:3000/query'><h3><span>Search Query box</span><h3></a></td>";
+	myString = myString + "<td id='row-id'><a href='http://localhost:3000/brands'><h3><span>Choice Matrix</span></h3></a></td></tr></table>";
+	showIt(myString);
 </script>
 </body>
 </html>
