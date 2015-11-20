@@ -8,8 +8,9 @@
 </head>
 	<body>
 
-	<div class="top">
-	<p></p>
+	<div class="top"><nav><ul>
+		<li id="op1" ><a href='http://localhost:3000'>Home</a></li>
+	</ul></nav>
 	</div>
 	<div id='phonedisplay'>
 	Phone info goes here
@@ -53,11 +54,34 @@
 		</script>
 		<style type="text/css">	
 
-		img
 
+		li {
+			display: inline-block;
+			color: red;
+			padding: 5px;
+		}
+
+		#op1{
+
+			top: 12px;
+			left: 20px;
+			position: relative;
+			width: 100px;
+    height: 30px;
+    font-size: 16px;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 3px 2px 3px #333333;
+    background-color: lightpink;
+        border-radius: 8px;
+		} 
+
+		
 		th {
 			text-decoration: underline;
 		}
+
 		td {
 			text-align: center;
 			font-family: Arial, Helvetica, sans-serif;
