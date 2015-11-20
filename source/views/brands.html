@@ -6,68 +6,58 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script  type="text/javascript" src="typeahead.min.js"></script>
-	</head>
-<body>
-<div id="branddisplay">
-</div>
-	<script type="text/javascript">
-
-/*$(document).ready(function(){
-
-			$('input.typeahead').typeahead({
-				name: 'countries',
-				remote: 'http://localhost:3000/search?key=%QUERY',
-				limit: 10
-			});
-		});
-
-		function getBrands(){
-			var brand={};
-			console.log("getting brands");
-			$.ajax({
-				url:"http://127.0.0.1:3000/brands",
-				data:brand,
-				dataType:"json",
-				success: function (data){
-					console.log("brands data");
-					data=data.CompanyData;
-					var cdata=""
-;				for(var i=0;i<data.length;i++)
-				{
-					console.log(data[i].company)
-					cdata=cdata+data[i].company
-				};
-				showIt(mystring);
-
-				}
-			});
-			function showIt(data){
-			testIt = data;
-			document.getElementById('URL').innerHTML = data;
-					}
-
-		}*/
-
-		function showIt(data){
-			document.getElementById('branddisplay').innerHTML = data;
-
+	<style type="text/css">
+		#table-id{
+				width: 20%;
+				font-size: 150%;
+				border: thin solid black;
+				border-collapse: collapse;
+				background-color: #3377ff;
+				text-align: center;
+		}
+		#row-id{
+			font-size: 150%;
+			border: thin solid black;
+			text-align: center;
+			border-collapse: collapse;
+			background-color: #ccddff;
+		}
+		a{
+			text-decoration:none;
+		}
+		body {
+  			background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
+    		background-repeat: no-repeat;
+    		background-attachment: fixed;
+    	    background-size: 1900px 1400px;
 		} 
-			 var data = <%- JSON.stringify(CompanyData) %>
+		table {
+		    width: 50%;
+		    margin-left: auto;
+		    margin-right: auto;
+		}
+	</style>	
+</head>
+<body>
+<div id="branddisplay"></div>
+<script type="text/javascript">
 
-			 console.log(data)
+	function showIt(data){
+		document.getElementById('branddisplay').innerHTML = data;
+	} 
 
-			 var myString = "<h3> Brands available </h3><br><br>";
-			 for (var i = 0; i < data.length; i++) {
-					var company = data[i].company;
-					
-					
-							var temp="<a href=http://127.0.0.1:3000/matrix?brand="+company+">"+company+"</a>"+"<br>";
-						myString= myString + temp;
-					};
-					showIt(myString);
-	</script>
+	 var data = <%- JSON.stringify(CompanyData) %>
 
-
-
+	 console.log(data)
+	 var myString = "<table id='table-id'><tr><th>Brands Available</tr></th>";
+	for (var i = 0; i < data.length; i++) {
+			var company = data[i].company;
+			
+			var temp="<tr><td id='row-id'><a href=http://127.0.0.1:3000/matrix?brand="+company+">"+company+"</a></td></tr>";
+			myString= myString + temp;
+	};
+	myString=myString+"</table>"
+	showIt(myString);			
+</script>
 </body>
 </html>
