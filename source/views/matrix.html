@@ -6,109 +6,105 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script  type="text/javascript" src="typeahead.min.js"></script>
+		<style type="text/css">
+		#table-id{
+			width: 60%;
+    		border: thin solid black;
+    		border-collapse: collapse;
+    		text-align: center;
+		}
+		#box-id{
+			border: thin solid black;
+			text-align: center;
+		}
+		#MatrixSpec{
+			font-size: 120%;
+			font-weight: bold;
+			text-align: center;
+		}
+		body {
+		    background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
+		    background-repeat: no-repeat;
+		    background-attachment: fixed;
+		    background-size: 1900px 1400px;
+		} 
+		table {
+		    width: 50%;
+		    margin-left: auto;
+		    margin-right: auto;
+		}
+
+		</style>
 </head>
+
 <body>
-<h1>Choice matrix</h1>
-	<div id="displaymatrix">
-</div>
-	<script type="text/javascript">
+	<div id="MatrixSpec"></div>
+	<div id="displaymatrix"></div>
+
+<script type="text/javascript">
+	function GetHeaders(obj) {
+        var cols = new Array();
+        var p = obj[0];
+//        console.log("hey");
+        for (var key in p) {
+            //alert(' name=' + key + ' value=' + p[key]);
+            cols.push(key);
+        }
+        return cols;
+    }
+	function showIt(data){
+			document.getElementById("displaymatrix").innerHTML = data;
+	}
+	function goBack() {
+	    window.history.back();
+	}
+
+	function CompanyName(input){
+			document.getElementById("MatrixSpec").innerHTML = input;
+	}
 	function check(ele) {
 		console.log("hello");
 		console.log(ele.name);
 		var elements=document.getElementsByName(ele.name);
 		var i;
-		for(i=0;i<elements.length;i++)
-		{
-			if(elements[i].type=='radio')
-			{
+		for(i=0;i<elements.length;i++){
+			if(elements[i].type=='radio'){
 				elements[i].checked=false;
 			}
 		}
 	}
 
+	 var data = <%- JSON.stringify(MatrixData) %>
+	 console.log(data)
+	 var lowp=data[0].price;
+	 var highp=data[data.length-1].price;
+	 var range=(highp-lowp)/5;
 
-	</script>
-	<script>
-function goBack() {
-    window.history.back();
-}
-</script>
-<script type="text/javascript">
-	function showIt(data){
-			document.getElementById("displaymatrix").innerHTML = data;
+	 var cols=GetHeaders(data);
+	 for(var i=0;i<cols.length;i++)
+	 {
+		console.log(cols[i]);
+	 }
 
-		} 
-			 var data = <%- JSON.stringify(MatrixData) %>
+	 var myString="<h4>Features</h4>";
+	 myString = myString+"<table id='table-id'><th id='box-id'>Price</th>";
+	 for(var i=1;i<=5;i++){
+	 	var low=lowp;
+	 	var high=lowp+(i*range);
 
-			 console.log(data)
-			 var lowp=data[0].price;
-			 var highp=data[data.length-1].price;
-			 var range=(highp-lowp)/5;
+	 	var temp="<td id='box-id'><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>";
 
-
-			 var myString = "<table><tr><th>Features</th></tr><th>price</th>";
-			 for(var i=1;i<=5;i++)
-			 {
-			 	var low=lowp;
-			 	var high=lowp+(i*range);
-
-
-			 	var temp="<td><input type='radio' name='price' value='<"+high+" '>&lt"+high+"</td>"
-
-			 
-						myString= myString + temp;
-					};
-					myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></tr></table";
-					showIt(myString);
+		myString= myString + temp;
+	};
+	myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></table>";
+	showIt(myString);
+	var url = window.location.href;
+	var CompName = url.split("=");
+	var str2 = "Choice Matrix for " + CompName[1];
+	CompanyName(str2);
 </script>
 	
-	<!--<table>
-		<tr>
-		<th>Features</th>
-		</tr>
-		<tr>
-		<th>Screen Size</th>
-		<td>
-		<input type="radio" name="screen size" value="4.0" id="4inch">4.0"
-		</td>
-		<td>
-		<input type="radio" name="screen size" value="4.7">4.7"
-		</td>
-		<td>
-		<input type="radio" name="screen size" value="5.0">5.0"
-		</td>
-		<td>
-		<input type="radio" name="screen size" value="5.7">5.7"
-		</td>
-		<td>
-		<button  name="screen size" onclick="check(this);">uncheck options</button>
-		</td>
-		</tr>
-
-		<tr>
-		<th>Price</th>
-		<td>
-		<input type="radio" name="price" value="<10000">&lt10000
-		</td>
-		<td>
-		<input type="radio" name="price" value="<20000">&gt 10000 &lt 20000
-		</td>
-		<td>
-		<input type="radio" name="price" value="<30000">&gt 20000 &lt 30000
-		</td>
-		<td>
-		<input type="radio" name="price" value=">30000">&gt 30000
-		</td>
-		<td>
-		<button  name="price" onclick="check(this);">uncheck options</button>
-		</td>
-		</tr>
-
-	</table>-->
-
 <br><br>
-			<button name="back" onclick="goBack();">back </button>
-
-
+	<button name="back" onclick="goBack();">Back </button>
 </body>
 </html>
