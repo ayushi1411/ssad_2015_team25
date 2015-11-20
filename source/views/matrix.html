@@ -42,6 +42,16 @@
 	<div id="displaymatrix"></div>
 
 <script type="text/javascript">
+	function GetHeaders(obj) {
+        var cols = new Array();
+        var p = obj[0];
+//        console.log("hey");
+        for (var key in p) {
+            //alert(' name=' + key + ' value=' + p[key]);
+            cols.push(key);
+        }
+        return cols;
+    }
 	function showIt(data){
 			document.getElementById("displaymatrix").innerHTML = data;
 	}
@@ -69,6 +79,13 @@
 	 var lowp=data[0].price;
 	 var highp=data[data.length-1].price;
 	 var range=(highp-lowp)/5;
+
+	 var cols=GetHeaders(data);
+	 for(var i=0;i<cols.length;i++)
+	 {
+		console.log(cols[i]);
+	 }
+
 	 var myString="<h4>Features</h4>";
 	 myString = myString+"<table id='table-id'><th id='box-id'>Price</th>";
 	 for(var i=1;i<=5;i++){

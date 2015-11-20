@@ -26,7 +26,7 @@
 				success : function (data) {
 					// console.log(data);
 					data = data.StudentsDataOut;
-					console.log(data);
+				//	console.log(data);
 					var myString = "";
 					for (var i = 0; i < data.length; i++) {
 						var phoneid = data[i].phoneid;
@@ -39,7 +39,7 @@
 						var COUNT="Results Found: " + data.length+"</br>";
 						myString= myString + temp;
 					};
-					console.log(myString);
+					//console.log(myString);
 					showIt(myString,COUNT);
 				}
 			});
@@ -51,10 +51,28 @@
 		} 
 	</script>
 	<style type="text/css">
+
+
+
+		.search{
+
+				position: absolute; 
+		   		left: 50%;
+   				top: 50%; 
+  				margin-left: -170px;
+   				margin-top: -300px;
+
+		}
+
+
 		.bs-example{
 			font-family: sans-serif;
-			position: relative;
-			margin: 50px;
+		/*	position: fixed;  */
+
+			top: 200px;
+			margin: 270px;
+			float: left;
+			clear: left;
 			/*float:left;*/
 		}
 		.typeahead, .tt-query, .tt-hint {
@@ -65,7 +83,7 @@
 			line-height: 30px;
 			outline: medium none;
 			padding: 8px 12px;
-			width: 396px;
+			width: 600px;
 		}
 		.typeahead {
 			background-color: #FFFFFF;
@@ -90,7 +108,7 @@
 		}
 		.tt-suggestion {
 			font-size: 24px;
-			line-height: 24px;
+			line-height: 14px;
 			padding: 3px 20px;
 		}
 		.tt-suggestion.tt-is-under-cursor {
@@ -101,20 +119,38 @@
 			margin: 0;
 		}
 		.tt-submit {
-			height: 50px;
-			width: 150px;
+			height: 47px;
+			width: 70px;
 			/*position: absolute;*/
 
 		}
+
+		#imagew {
+
+	   	position: absolute; 
+   		left: 50%;
+   		top: 50%; 
+  		margin-left: -200px;
+   		margin-top: -150px;
+
+		} 
+
+		#i1 { left: 10%; position: relative; }
+		#i2 { left: 25%; position: relative; }
+		#i3 { left: 40%; position: relative; }
+	
+		
+
 		#URL{
 			margin-top:20px; 
-			margin-left:20px;
+			margin-left:20px; 
 			font-size:20px;
+			float: left;
 
 		}
 		#Counts{
 			font-size: 20px;
-			color:green;
+			color:black;
 		}
 		body {
     background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
@@ -130,19 +166,23 @@
 </head>
 <body>
 	<div class="page-header">
-		<h1>Search Engine</h1>
+		<img class ="search" src="http://127.0.0.1:3000/images/logo.gif" />
 	</div>
 	<!-- <div id="wrapper"> -->
 	<div class="bs-example">
 		<table>
 		<tr>
 		   <td><input id="myInput" type="text" name="typeahead" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="Type your Query"></td>
-			<td><input id="button" placeholder="Submit" name="submit" class="tt-submit" type="submit" onclick="getData()"></td>
+			<td><input id="button" placeholder="Submit" name="submit" class="tt-submit" type="image" src="http://127.0.0.1:3000/images/images.jpeg" onclick="getData()"></td>
 		    <td id="Counts"></td>
 		</tr>
 		</table>
 	</div>
-</br>
+
+	<div id="imagew" > 	
+	<img id="i1" src= "http://127.0.0.1:3000/images/i1.gif"/> 
+	<img id="i2" src= "http://127.0.0.1:3000/images/i2.gif"/> 
+	<img id="i3" src= "http://127.0.0.1:3000/images/i3.gif"/> </div>
 <!-- <div id="Counts">
 
 </div> -->

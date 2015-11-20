@@ -2,7 +2,8 @@ var express=require('express');
 var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('data', 'root', 'root', {
+
+var sequelize = new Sequelize('data', 'root', 'risa1996', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -12,10 +13,11 @@ var sequelize = new Sequelize('data', 'root', 'root', {
     },
 });
 
+
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'root',
+  password : 'risa1996',
   database : 'data'
 });
 
@@ -93,11 +95,11 @@ app.get('/search',function(req,res){
 app.get('/getcompanydata',function(req,res) {
  
  // list of "expected words" as parameters' name in the query
-    var param_phone = ['phone', 'mobile', 'company'];
-    var param_price = ['amount', 'price', 'cost'];
+    var param_phone = ['phone', 'mobile', 'company', 'phones'];
+    var param_price = ['amount', 'price', 'cost', 'costs'];
     var param_camera = ['camerasize', 'camera'];
     var param_screen = ['screen', 'screensize'];
-    var param_color = ['color', 'coloured', 'colored','coloured'];
+    var param_color = ['color', 'coloured', 'colored','coloured', 'colors'];
 
 
     // List of values for parameters as available in the database.
@@ -221,6 +223,9 @@ app.get('/getcompanydata',function(req,res) {
           start_index=Math.max(start_index, 0);
           var end_index=Math.min(i+3, arr.length);
 
+       //   console.log(start_index);
+         // console.log(end_index);
+
           // "start_index" and" end_index" are the variables that bound the indices around the parameter,
           // in which the "values" and the "operators" will be looked for.
 
@@ -266,6 +271,9 @@ app.get('/getcompanydata',function(req,res) {
          if(param_list[j].toLowerCase().localeCompare(word)==0)
          {         
  
+         
+          console.log("parameter");
+          console.log(param_list[0]);
            temp=1;
 
 
@@ -299,23 +307,25 @@ app.get('/getcompanydata',function(req,res) {
       {
         var lim=arr.indexOf("phone");
         end_index=lim;
+
+        if(lim==-1)
+          end_index=arr.indexOf("phones");
     
-      }  
-     
+      }      
 
      // "list" here refers to either "phones_list" or "color_list" to check for the value of the parameter. 
      // function that checks for the operator for the corresponding parameter in the query.
       check_opt( start_index, end_index, parmt);
+
   		for(var w=start_index; w<end_index; w++)
   		{
-
   			// fr is a local variable that checks whether any value corresponding to the parameter was found
   			// in the query or not.
+      
   			var fr=0;
   			for(var fe=0; fe<list.length; fe++)
   			{
-
-  				console.log(list[fe]);
+         
   				if(arr[w].toLowerCase().localeCompare(list[fe].toLowerCase())==0)
   				{
   					console.log("parameter value");
@@ -332,7 +342,7 @@ app.get('/getcompanydata',function(req,res) {
   		// if operator is already concatenated (using the "check_opt" function, 
   		// then just concatenate the value in the query string)
   		if(w!=end_index && optr==1)
-  			temp_str=temp_str.concat(" '", list[fe], "'");
+  			temp_str=temp_str.concat(" '", list[fe], "' ");
   		
   		// if(no operator was found for the parameter, smply append and "=" in the query)
         else if(w!=end_index)
@@ -348,7 +358,7 @@ app.get('/getcompanydata',function(req,res) {
   	function price_query(start_index, end_index, parmt){
 
         check_opt( start_index, end_index, parmt);
-  		for(var w=start_index; w<end_index;w++)
+  		  for(var w=start_index; w<end_index;w++)
   			{
   				var fr=0;
 
@@ -366,9 +376,9 @@ app.get('/getcompanydata',function(req,res) {
      		 if(w!=end_index && optr==1)
         		temp_str=temp_str.concat( " " , parseInt(arr[w]));
      		 else if(w!=end_index)
-        		temp_str=temp_str.concat(parmt, " = ", parseInt(arr[w]));
+        		temp_str=temp_str.concat(" ", parmt, " = ", parseInt(arr[w]));
   	  		 else if(w==end_index && optr!=1)
-  				temp_str=temp_str.concat(parmt, " ", "!= ", 0, " ") ;
+  				temp_str=temp_str.concat(" ", parmt, " ", "!= ", 0, " ") ;
       
       		// incase a negation is specifed in the query, then make the values of that attribute as zero.
       		// example, input query: "samsung phone with no camera".
