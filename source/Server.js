@@ -3,7 +3,8 @@ var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('data', 'root', 'data', {
+
+var sequelize = new Sequelize('data', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -17,12 +18,21 @@ var sequelize = new Sequelize('data', 'root', 'data', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'data',
+  password : 'root',
   database : 'data'
 });
 
 connection.connect();
+
+var bodyParser=require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+
 app.use(express.static('public')); // serving static files in express.
+
+app.disable('etag');
 
 app.set('views',__dirname + '/views');
 app.use(express.static(__dirname + '/JS'));
@@ -37,8 +47,15 @@ app.get('/query',function(req,res){
 res.render('index.html');
 });
 
-
+var body=[];
 // autocomplete feature implementation
+app.get('/testIt',function(req,res){
+ res.setHeader("Access-Control-Allow-Origin", "*");
+  body=req.query.name;
+ console.log(body);
+ res.send(body);
+});
+
 app.get('/search',function(req,res){
 
   
@@ -47,6 +64,8 @@ app.get('/search',function(req,res){
                    'lessthan', 'greaterthan', 'between', 'under', 'equal', 'below', 'above', 'phone', 'company',
                     'rs', 'color', 'coloured', 'screen', 'screensize', 'or'];
 
+ console.log("query string");
+ // console.log(req.query.key);
   var arr = req.query.key.toString().split(/\b\s+/);
 
   var len = arr.length;
@@ -62,14 +81,16 @@ app.get('/search',function(req,res){
   for(var i=0; i<exp_words.length; i++)
   {
     if(re.test(exp_words[i]))
-      data.push(exp_words[i]);
-  }
-
+      data.push(body+" "+exp_words[i]);
+  } 
+console.log(data);
 
 // partially manipulating asynchronous callback by creating partial function for each turn of the loop
   for(var i=0; i<param_p.length; i++) (function(i){
-    var  qstr='select distinct '  + param_p[i] + ' from data where ' + param_p[i] + ' like "' + last_word + '%";'; 
 
+    var  qstr='select distinct '  + param_p[i] + ' from data where ' + param_p[i] + ' like "' + last_word + '%";'; 
+    
+     // console.log(qstr);
     connection.query(qstr, function(err, rows, fields) {
 
     if (err) throw err;
@@ -81,7 +102,7 @@ app.get('/search',function(req,res){
        var temp2 = qstr.split(/\b\s+/);
    //    console.log(temp2[2]);
     //   console.log(rows[j][temp2[2]]);
-       data.push(rows[j][temp2[2]]);
+       data.push(body+" "+rows[j][temp2[2]]);
       
       }
     
@@ -250,8 +271,8 @@ app.get('/getcompanydata',function(req,res) {
   		// appending temp_str string into the global_string
   		global_string = global_string.concat(temp_str);
 
-  		console.log("global string in the end");
-  		console.log(global_string);
+  		// console.log("global string in the end");
+  		// console.log(global_string);
   		count++;
 
   	}
@@ -274,7 +295,7 @@ app.get('/getcompanydata',function(req,res) {
          {         
  
          
-          console.log("parameter");
+          // console.log("parameter");
           console.log(param_list[0]);
            temp=1;
 
@@ -330,8 +351,8 @@ app.get('/getcompanydata',function(req,res) {
          
   				if(arr[w].toLowerCase().localeCompare(list[fe].toLowerCase())==0)
   				{
-  					console.log("parameter value");
-  					console.log(arr[w]);
+  					// console.log("parameter value");
+  					// console.log(arr[w]);
   					fr=1;
   					break;
   				}
@@ -485,6 +506,43 @@ app.get('/matrix',function(req,res){
       res.render('matrix.html',{MatrixData:studentsdata})
     });
 });
+
+app.get('/result',function(req,res){
+ res.setHeader("Access-Control-Allow-Origin", "*");
+  body=req.query.name;
+ console.log(body);
+ //res.send(body);
+ function parseParms(str) {
+    var pieces = str.split("&")
+        // process each query pair
+    QueryString="select * from data where ";
+
+    for (i = 0; i < pieces.length-1; i++) {
+        /*parts = pieces[i].split("=");
+        if (parts.length < 2) {
+            parts.push("");
+        }
+        console.log(parts);
+        var a=parts.join("=");
+        console.log(a);*/
+        
+        //data[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+        QueryString=QueryString+pieces[i]+" and ";
+    }
+    QueryString=QueryString+pieces[pieces.length-1];
+    return QueryString;
+    //console.log(data);
+  //  return data;
+
+}
+    qstr=parseParms(body);
+    sequelize.query(qstr).spread(function(studentsdata,metadata){
+    res.setHeader("Access-Control-Allow-Origin","*");
+    res.render('result.html',{MatrixData:studentsdata})
+    });
+
+});
+
 
 var server=app.listen(3000,function(){
 console.log("We have started our server on port 3000");
