@@ -3,7 +3,7 @@ var app=express();
 var  mysql=require('mysql');
 var Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('data', 'root', 'risa1996', {
+var sequelize = new Sequelize('data', 'root', 'data', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -17,7 +17,7 @@ var sequelize = new Sequelize('data', 'root', 'risa1996', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'risa1996',
+  password : 'data',
   database : 'data'
 });
 
@@ -30,6 +30,10 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 app.get('/',function(req,res){
+res.render('start.html');
+});
+
+app.get('/query',function(req,res){
 res.render('index.html');
 });
 
