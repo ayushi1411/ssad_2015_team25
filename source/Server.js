@@ -47,8 +47,6 @@ app.get('/search',function(req,res){
                    'lessthan', 'greaterthan', 'between', 'under', 'equal', 'below', 'above', 'phone', 'company',
                     'rs', 'color', 'coloured', 'screen', 'screensize', 'or'];
 
- // console.log("query string");
- // console.log(req.query.key);
   var arr = req.query.key.toString().split(/\b\s+/);
 
   var len = arr.length;
