@@ -486,6 +486,43 @@ app.get('/matrix',function(req,res){
     });
 });
 
+app.get('/result',function(req,res){
+ res.setHeader("Access-Control-Allow-Origin", "*");
+  body=req.query.name;
+ console.log(body);
+ //res.send(body);
+ function parseParms(str) {
+    var pieces = str.split("&")
+        // process each query pair
+    QueryString="select * from data where ";
+
+    for (i = 0; i < pieces.length-1; i++) {
+        /*parts = pieces[i].split("=");
+        if (parts.length < 2) {
+            parts.push("");
+        }
+        console.log(parts);
+        var a=parts.join("=");
+        console.log(a);*/
+        
+        //data[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+        QueryString=QueryString+pieces[i]+" and ";
+    }
+    QueryString=QueryString+pieces[pieces.length-1];
+    return QueryString;
+    //console.log(data);
+  //  return data;
+
+}
+    qstr=parseParms(body);
+    sequelize.query(qstr).spread(function(studentsdata,metadata){
+    res.setHeader("Access-Control-Allow-Origin","*");
+    res.render('result.html',{MatrixData:studentsdata})
+    });
+
+});
+
+
 var server=app.listen(3000,function(){
 console.log("We have started our server on port 3000");
 });
