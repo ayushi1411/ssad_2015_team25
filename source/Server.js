@@ -48,6 +48,8 @@ res.render('index.html');
 });
 
 var body=[];
+
+
 // autocomplete feature implementation
 app.get('/testIt',function(req,res){
  res.setHeader("Access-Control-Allow-Origin", "*");
@@ -55,6 +57,8 @@ app.get('/testIt',function(req,res){
  console.log(body);
  res.send(body);
 });
+
+
 
 app.get('/search',function(req,res){
 
