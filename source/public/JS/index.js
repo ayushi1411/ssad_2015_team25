@@ -45,12 +45,12 @@ $(document).ready(function(){
 					var model = data[i].model;
 					var screen_size=data[i].screen_size;
 					var price=data[i].price
-					///	var color=data[i].color
+					
 					var temp = "<a href = http://localhost:3000/phoneinfo?pid="+ phoneid + '>' +company +'&nbsp&nbsp&nbsp' + model + '&nbsp&nbsp&nbsp' +"</a></br></br>";
 					var COUNT="Results Found: " + data.length+"</br>";
 					myString= myString + temp;
 				};
-					//console.log(myString);
+					
 					showIt(myString,COUNT);
 				}
 			});
