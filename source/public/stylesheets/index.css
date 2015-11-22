@@ -1,4 +1,6 @@
-
+		a{
+			text-decoration: none;
+		}
 		.search_bar{
 			font-family: sans-serif;
 		/* 	position: fixed;  */
