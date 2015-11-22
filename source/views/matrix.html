@@ -22,12 +22,20 @@
 			font-weight: bold;
 			text-align: center;
 		}
-		body {
+	/*	body {
 		    background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
 		    background-repeat: no-repeat;
 		    background-attachment: fixed;
 		    background-size: 1900px 1400px;
-		} 
+		}  */
+
+		body{
+
+			background-color: #18bc9c;
+
+		}
+
+
 		table {
 		    width: 50%;
 		    margin-left: auto;
@@ -156,7 +164,7 @@ function GetHeaders(obj) {
 		 }
 			var url = window.location.href;
 			var CompName = url.split("=");
-			var str2 = "Choice Matrix for " + CompName[1];
+			var str2 = "<h1>Choice Matrix for " + CompName[1] + "</h1>";
 			CompanyName(str2);
 			 
 			 var lowp=data[0].price;
@@ -168,7 +176,7 @@ function GetHeaders(obj) {
 				console.log(cols[i]);
 			 }
 
-			 var myString="<h4>Features</h4>";
+			 var myString="<br><br><br>";
 			 myString = myString+"<table id='table-id'><tr><th id='box-id'>price</th>";
 
 			 for(var i=1;i<=5;i++){
