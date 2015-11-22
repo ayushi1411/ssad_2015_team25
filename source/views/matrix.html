@@ -151,6 +151,9 @@ function GetHeaders(obj) {
 								var COUNT="Results Found: " + data.length+"</br>";
 								myString= myString + temp;
 							};
+
+							if(data.length==0)
+								var COUNT ="Results Found: " + 0;
 							console.log(myString);	
 							showItcon(myString,COUNT);
 						}
