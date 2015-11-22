@@ -48,6 +48,8 @@ res.render('index.html');
 });
 
 var body=[];
+
+
 // autocomplete feature implementation
 app.get('/testIt',function(req,res){
  res.setHeader("Access-Control-Allow-Origin", "*");
@@ -55,6 +57,8 @@ app.get('/testIt',function(req,res){
  console.log(body);
  res.send(body);
 });
+
+
 
 app.get('/search',function(req,res){
 
@@ -493,6 +497,7 @@ console.log(rows[0].company);
 
 });*/
     sequelize.query(QueryString).spread(function(studentsdata,metadata){
+     console.log(QueryString);
       res.setHeader("Access-Control-Allow-Origin","*");
       console.log(studentsdata[0].company);
       res.render('brands.html',{CompanyData:studentsdata})
@@ -518,31 +523,27 @@ app.get('/result',function(req,res){
     QueryString="select * from data where ";
 
     for (i = 0; i < pieces.length-1; i++) {
-        /*parts = pieces[i].split("=");
-        if (parts.length < 2) {
-            parts.push("");
-        }
-        console.log(parts);
-        var a=parts.join("=");
-        console.log(a);*/
-        
-        //data[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
         QueryString=QueryString+pieces[i]+" and ";
     }
-    QueryString=QueryString+pieces[pieces.length-1];
+    QueryString=QueryString+pieces[pieces.length-1]+";";
     return QueryString;
     //console.log(data);
   //  return data;
-
 }
     qstr=parseParms(body);
-    sequelize.query(qstr).spread(function(studentsdata,metadata){
-    res.setHeader("Access-Control-Allow-Origin","*");
-    res.render('result.html',{MatrixData:studentsdata})
-    });
-
+    console.log(qstr);
+    res.send(qstr);
 });
-
+app.get('/respo',function(req,res){
+	QueryString=req.query.name;
+	console.log(QueryString);
+	console.log("one");
+	//res.send(QueryString);
+	sequelize.query(QueryString).spread(function(studentsdata,metadata){
+    res.setHeader("Access-Control-Allow-Origin","*");
+    res.send(studentsdata);
+    });
+});
 
 var server=app.listen(3000,function(){
 console.log("We have started our server on port 3000");
