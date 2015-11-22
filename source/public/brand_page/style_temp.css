@@ -53,7 +53,7 @@ table {
 body {
   color: black;
   margin: 0 auto;
-  font: 1em/1.3em Montserrat, Helvetica, sans-serif;
+  font: 0.625em/0.8125em Montserrat, Helvetica, sans-serif;
 }
 body, html {
   height: 100%;
@@ -64,77 +64,77 @@ body, html {
 .container {
   width: 80%;
   height: 100%;
-  padding: 20px 10%;
+  padding: 1em 10%;
   text-align: center;
   background-color: #b3d9ff;
 }
 h1 {
-  margin: 40px 0;
-  font-size: 40px;
-  line-height: 40px;
+  margin: 1.25em 0;
+  font-size: 1.25em;
+  line-height: 1.25em;
   font-weight: bold;
-  text-shadow: 0px 1px 0 rgba(0,0,0,.3);
+  text-shadow: 0em 0.625em 0 rgba(0,0,0,.3);
   -webkit-font-smoothing: antialiased;
 }
 h2 {
-  font-size: 28px;
+  font-size: 0.875em;
   color: #fff;
   font-weight: normal;
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 0.625em;
 }
 a {
   text-align: left;
   text-decoration: none;
   color: #fff;  
-  margin: 0 10px;
+  margin: 0 0.3125em;
 }
 
 p {
-  line-height: 32px;
-  padding: 0 0 40px 0;
+  line-height: 1em;
+  padding: 0 0 1.25em 0;
   text-align: left;
 }
 i.fa-bars {
-  margin-top: 2px;
-  font-size: 28px;
+  margin-top: 0.0625;
+  font-size: 0.875em;
   float: left;
 }
 
 /* Button styles */
 .btn {
-    box-sizing:border-box;
+  box-sizing:border-box;
    -moz-box-sizing:border-box;
    -webkit-box-sizing:border-box;
   
   position: relative;
   display: inline-block;
   overflow: hidden;
-  height: 50px;
+  height: 3.125em;
   
-  border-radius: 6px;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
+  border-radius: 0.375em;
+  -moz-border-radius: 0.375em;
+  -webkit-border-radius: 0.375em;
     
-  line-height: 50px;
-  padding: 0 30px;  
-  font-size: 14px;
+  line-height: 1.5625em;
+  padding: 0 0.9375em;  
+  font-size: 0.4375em;
 
-  -webkit-box-shadow: 0 3px 0 0 #2C3E50;
-  box-shadow: 0 3px 0 0 #2C3E50;
+  -webkit-box-shadow: 0 0.15em 0 0 #2C3E50;
+  box-shadow: 0 0.09375em 0 0 #2C3E50;
   background-color:#2C3E50;
 }
   
   .btn:active,
   .btn.active {
-    top: 2px;
-    -webkit-box-shadow: 0 1px 0 0 #2C3E50;
-    box-shadow: 0 1px 0 0 #2C3E50;
+    top: 0.0625em;
+    -webkit-box-shadow: 0 0.03125em 0 0 #2C3E50;
+    box-shadow: 0 0.03125em 0 0 #2C3E50;
   }
 
   .btn-small {
-    padding: 0 15px;
-    font-size: 10px;
+    padding: 0 0.46875em;
+    font-size: 0.3125em;
     height: 30px;
     line-height: 30px;
   }
@@ -171,7 +171,7 @@ i.fa-bars {
       right: 0;
       top: 20px;
       text-align: center;
-      font-size: 18px;
+      font-size: 20px;
       text-transform: uppercase;
     }
       .menu .left-menu a.menu-button i { 
@@ -280,7 +280,7 @@ i.fa-bars {
     top: 20px;
     margin: 0;
     text-align: left;
-    font-size: 28px;
+    font-size: 26px;
     text-transform: uppercase;
   }
 

@@ -42,7 +42,7 @@
 			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 			margin-top: 12px;
 			padding: 8px 0;
-			width: 422px;
+			width: 700px;
 		}
 		.tt-suggestion {
 			font-size: 24px;
@@ -92,8 +92,11 @@
 
 		}
 		#Counts{
+			height: 50px ;
+			width: 300px ;
 			font-size: 20px;
 			color:black;
+			
 		}
 
 }
