@@ -352,7 +352,8 @@ footer .footer-col {
 }
 
 footer .footer-below {
-    padding: 25px 0;
+    padding: 10px 0;  
+    /*height: 0px;  */
     background-color: #233140;
 }
 
