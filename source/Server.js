@@ -4,7 +4,7 @@ var  mysql=require('mysql');
 var Sequelize = require('sequelize');
 
 
-var sequelize = new Sequelize('data', 'root', 'root', {
+var sequelize = new Sequelize('data', 'root', 'data', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -18,7 +18,7 @@ var sequelize = new Sequelize('data', 'root', 'root', {
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'root',
+  password : 'data',
   database : 'data'
 });
 
