@@ -37,7 +37,7 @@ $(document).ready(function(){
 		     	success : function (data) {
 					// console.log(data);
 					data = data.StudentsDataOut;
-				//	console.log(data);
+					console.log(data);
 				var myString = "";
 				for (var i = 0; i < data.length; i++) {
 					var phoneid = data[i].phoneid;
