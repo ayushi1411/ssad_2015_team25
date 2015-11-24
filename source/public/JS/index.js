@@ -35,7 +35,7 @@ $(document).ready(function(){
 		     	data:model,
 		     	dataType: "json",
 		     	success : function (data) {
-					// console.log(data);
+					 console.log(data);
 					data = data.StudentsDataOut;
 					console.log(data);
 				var myString = "";
