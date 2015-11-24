@@ -7,40 +7,48 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script  type="text/javascript" src="typeahead.min.js"></script>
 		<style type="text/css">
+
+		input[type=radio]{
+		width: 100%;
+    	height: 4em;
+		}
 		#table-id{
-			width: 60%;
-    		border: thin solid black;
+			-webkit-border-radius: 8%;
+		    -moz-border-radius: 8%;
+		    overflow:hidden;
+		    border-radius: 10%;  
+		    box-shadow: #666 0px 2px 3px;
+		    width: 60%;
+			height: 60%;    			
     		border-collapse: collapse;
     		text-align: center;
+    		font-size: 130%;
+		}
+		#row-id{
+			height:70%;
 		}
 		#box-id{
-			border: thin solid black;
+			height: 60%; 
+		    box-shadow: #666 0px 2px 3px;				
 			text-align: center;
 		}
 		#MatrixSpec{
 			font-size: 120%;
+			height: 60%;
 			font-weight: bold;
 			text-align: center;
 		}
-	/*	body {
-		    background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
-		    background-repeat: no-repeat;
-		    background-attachment: fixed;
-		    background-size: 1900px 1400px;
-		}  */
-
 		body{
-
 			background-color: #18bc9c;
-
 		}
-
 
 		table {
 		    width: 50%;
 		    margin-left: auto;
 		    margin-right: auto;
+		    height: 60%;
 		}
+
 		a{
 			text-decoration: none;
 		}
@@ -55,10 +63,7 @@
 function GetHeaders(obj) {
         var cols = new Array();
         var p = obj[0];
-
-//        console.log("hey");
         for (var key in p) {
-            //alert(' name=' + key + ' value=' + p[key]);
             cols.push(key);
         }
         return cols;
@@ -85,12 +90,10 @@ function GetHeaders(obj) {
 			console.log(vals[3],vals[4],vals[5],vals[6]);
 	}
 
-	
-
-
 	function showIt(data){
 			document.getElementById("displaymatrix").innerHTML = data;
 	}
+
 	function goBack() {
 	    window.history.back();
 	}
@@ -98,6 +101,7 @@ function GetHeaders(obj) {
 	function CompanyName(input){
 			document.getElementById("MatrixSpec").innerHTML = input;
 	}
+
 	function check(ele) {
 		console.log("hello");
 		console.log(ele.name);
@@ -112,7 +116,7 @@ function GetHeaders(obj) {
 			}
 		}
 	}
-	function search(){
+	function search(){;
 		var url="company='"+CompName[1]+"'";
 		for(var i=0;i<atttr.length;i++)
 		{
@@ -180,7 +184,7 @@ function GetHeaders(obj) {
 			 }
 
 			 var myString="<br><br><br>";
-			 myString = myString+"<table id='table-id'><tr><th id='box-id'>price</th>";
+			 myString = myString+"<table id='table-id'><tr id='row-id'><th id='box-id'>price</th>";
 
 			 for(var i=1;i<=5;i++){
 			 		var low=lowp;
@@ -220,7 +224,7 @@ function GetHeaders(obj) {
 
 	 	if(cols[j]!='price')
 	 	{
-		 myString = myString+"<tr><th id='box-id'>"+cols[j]+"</th>";
+		 myString = myString+"<tr id='row-id'><th id='box-id'>"+cols[j]+"</th>";
 		 for(var i=0;i<5;i++){
 
 		 	var val;

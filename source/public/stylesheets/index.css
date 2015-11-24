@@ -21,7 +21,7 @@
 			line-height: 40px;
 			outline: medium none;
 			padding: 8px 12px;
-			width: 700px;
+			width: 930px;
 		}
 		.typeahead {
 			background-color: #FFFFFF;
@@ -68,7 +68,7 @@
 
 	   	position: absolute; 
    		left: 46%;
-   		top: 45%; 
+   		top: 30%; 
   		margin-left: -200px;
    		margin-top: -150px;
 
