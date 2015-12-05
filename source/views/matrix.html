@@ -7,32 +7,48 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script  type="text/javascript" src="typeahead.min.js"></script>
 		<style type="text/css">
+
+		input[type=radio]{
+		width: 100%;
+    	height: 4em;
+		}
 		#table-id{
-			width: 60%;
-    		border: thin solid black;
+			-webkit-border-radius: 8%;
+		    -moz-border-radius: 8%;
+		    overflow:hidden;
+		    border-radius: 10%;  
+		    box-shadow: #666 0px 2px 3px;
+		    width: 60%;
+			height: 60%;    			
     		border-collapse: collapse;
     		text-align: center;
+    		font-size: 130%;
+		}
+		#row-id{
+			height:70%;
 		}
 		#box-id{
-			border: thin solid black;
+			height: 60%; 
+		    box-shadow: #666 0px 2px 3px;				
 			text-align: center;
 		}
 		#MatrixSpec{
 			font-size: 120%;
+			height: 60%;
 			font-weight: bold;
 			text-align: center;
 		}
-		body {
-		    background-image: url('http://orig14.deviantart.net/a5e5/f/2008/313/d/a/adidas_blue_wallpaper_by_javiglez.png');
-		    background-repeat: no-repeat;
-		    background-attachment: fixed;
-		    background-size: 1900px 1400px;
-		} 
+		body{
+			background-color: #18bc9c;
+		}
+
 		table {
 		    width: 50%;
 		    margin-left: auto;
 		    margin-right: auto;
+		    height: 60%;
 		}
+
 		a{
 			text-decoration: none;
 		}
@@ -47,10 +63,7 @@
 function GetHeaders(obj) {
         var cols = new Array();
         var p = obj[0];
-
-//        console.log("hey");
         for (var key in p) {
-            //alert(' name=' + key + ' value=' + p[key]);
             cols.push(key);
         }
         return cols;
@@ -77,12 +90,10 @@ function GetHeaders(obj) {
 			console.log(vals[3],vals[4],vals[5],vals[6]);
 	}
 
-	
-
-
 	function showIt(data){
 			document.getElementById("displaymatrix").innerHTML = data;
 	}
+
 	function goBack() {
 	    window.history.back();
 	}
@@ -90,6 +101,7 @@ function GetHeaders(obj) {
 	function CompanyName(input){
 			document.getElementById("MatrixSpec").innerHTML = input;
 	}
+
 	function check(ele) {
 		console.log("hello");
 		console.log(ele.name);
@@ -104,7 +116,7 @@ function GetHeaders(obj) {
 			}
 		}
 	}
-	function search(){
+	function search(){;
 		var url="company='"+CompName[1]+"'";
 		for(var i=0;i<atttr.length;i++)
 		{
@@ -123,112 +135,96 @@ function GetHeaders(obj) {
 		     	data:{"name":url},
 		     	contentType:'application/json',
 		     	success:function(data){
-		     		// alert("success");
-		     		alert(data);
-		     		console.log("1");
-		     		console.log(data);
 		     		var query = data;
-		console.log("2");
-		console.log(data);
-		   $.ajax({
-			url: 'http://localhost:3000/respo',
-			type:'GET',
-		    datatype:'json',
-		    crossDomain : true,
-		    data:{"name":query},
-		    contentType:'application/json',
-			success : function(data){
-				//data = data.StudentsDataOut;
-				//console.log(MatrixData);
-					console.log("3");
 					console.log(data);
-				var myString = "";
-				for (var i = 0; i < data.length; i++) {
-					//var obj	= JSON.parse(data[i]);	
-					//console.log(obj);
-				//	console.log("yesssssss");
-					var phoneid = data[i].phoneid;
-					var company = data[i].company;
-					var model = data[i].model;
-					//var screen_size=data[i].screen_size;
-					//var price=data[i].price
-					console.log("Everrything Works");
-					var temp = "<a href = http://localhost:3000/phoneinfo?pid="+ phoneid + '>' +company +'&nbsp&nbsp&nbsp' + model + '&nbsp&nbsp&nbsp' +"</a></br></br>";
-					var COUNT="Results Found: " + data.length+"</br>";
-					myString= myString + temp;
-				};
-				console.log(myString);	
-				showItcon(myString,COUNT);
-			}
-		});
-		     	}
-		     });
-		
-		//console.log("speedy");
-		
+				   	$.ajax({
+						url: 'http://localhost:3000/respo',
+						type:'GET',
+					    datatype:'json',
+					    crossDomain : true,
+					    data:{"name":query},
+					    contentType:'application/json',
+						success : function(data){
+							var myString = "";
+							for (var i = 0; i < data.length; i++) {
+								var phoneid = data[i].phoneid;
+								var company = data[i].company;
+								var model = data[i].model;
+								console.log("Everrything Works");
+								var temp = "<a href = http://localhost:3000/phoneinfo?pid="+ phoneid + '>' +company +'&nbsp&nbsp&nbsp' + model + '&nbsp&nbsp&nbsp' +"</a></br></br>";
+								var COUNT="Results Found: " + data.length+"</br>";
+								myString= myString + temp;
+							};
 
+							if(data.length==0)
+								var COUNT ="Results Found: " + 0;
+							console.log(myString);	
+							showItcon(myString,COUNT);
+						}
+					});
+				     	}
+				     });
 	}
 	function showItcon(data,COUNT){
-		 	//testIt = data;
 		 	document.getElementById('URL').innerHTML = data;
 		 	document.getElementById('Counts').innerHTML = COUNT;
 		 }
-	var url = window.location.href;
-	var CompName = url.split("=");
-	var str2 = "Choice Matrix for " + CompName[1];
-	CompanyName(str2);
-	 
-	 var lowp=data[0].price;
-	 var highp=data[data.length-1].price;
-	 var range=(highp-lowp)/5;
+			var url = window.location.href;
+			var CompName = url.split("=");
+			var str2 = "<h1>Choice Matrix for " + CompName[1] + "</h1>";
+			CompanyName(str2);
+			 
+			 var lowp=data[0].price;
+			 var highp=data[data.length-1].price;
+			 var range=(highp-lowp)/5;
 
-	 for(var i=0;i<cols.length;i++)
-	 {
-		console.log(cols[i]);
-	 }
+			 for(var i=0;i<cols.length;i++)
+			 {
+				console.log(cols[i]);
+			 }
 
-	 var myString="<h4>Features</h4>";
-	 myString = myString+"<table id='table-id'><tr><th id='box-id'>price</th>";
+			 var myString="<br><br><br>";
+			 myString = myString+"<table id='table-id'><tr id='row-id'><th id='box-id'>price</th>";
 
-	 for(var i=1;i<=5;i++){
-	 		var low=lowp;
-	 		var high=lowp+(i*range);
+			 for(var i=1;i<=5;i++){
+			 		var low=lowp;
+			 		var high=lowp+(i*range);
 
-	 		var temp="<td id='box-id'><input type='radio' name='price' value='"+high+" 'onclick='hello(this.name, this.value);'>&lt"+high+"</td>";
+			 		var temp="<td id='box-id'><input type='radio' name='price' value='"+high+" 'onclick='hello(this.name, this.value);'>&lt"+high+"</td>";
 
-			myString= myString + temp;
-		};
-		myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></tr>";
+					myString= myString + temp;
+				};
+				myString=myString+"<td><button  name='price' onclick='check(this);'>uncheck options</button></td></tr>";
 
-	for(var j=3;j<cols.length;j++)
-	{
-		var values=new Array();
-		var temp=new Array();
-		for(var i=0;i<data.length;i++)
-		{
-			temp.push(data[i][cols[j]]);
-		}
-		temp.sort();
-		temp.sort(function(a,b){return a-b;});
-
-		//temp.sort();
-
-		console.log(temp);
-		for(var i=0,k=0;i<temp.length;i++)
-		{
-			if(i==0 || temp[i]!=temp[i-1])
+			for(var j=3;j<cols.length;j++)
 			{
-				values[k]=temp[i];
-				k++;
-			}
-		}
-		console.log(values);
+				var values=new Array();
+				var temp=new Array();
+				for(var i=0;i<data.length;i++)
+				{
+					temp.push(data[i][cols[j]]);
+				}
+				temp.sort();
+				temp.sort(function(a,b){return a-b;});
+
+				//temp.sort();
+
+				console.log(temp);
+				for(var i=0,k=0;i<temp.length;i++)
+				{
+					if(i==0 || temp[i]!=temp[i-1])
+					{
+						values[k]=temp[i];
+						k++;
+					}
+				}
+				console.log(values);
 
 
 
 	 	if(cols[j]!='price')
 	 	{
-		 myString = myString+"<tr><th id='box-id'>"+cols[j]+"</th>";
+		 myString = myString+"<tr id='row-id'><th id='box-id'>"+cols[j]+"</th>";
 		 for(var i=0;i<5;i++){
 
 		 	var val;
@@ -258,7 +254,6 @@ function GetHeaders(obj) {
 			<br>
 			<br>
 			<br>
-
 			<div id='URL'>
 			</div>
 

@@ -35,7 +35,7 @@ $(document).ready(function(){
 		     	data:model,
 		     	dataType: "json",
 		     	success : function (data) {
-					// console.log(data);
+					 console.log(data);
 					data = data.StudentsDataOut;
 					console.log(data);
 				var myString = "";
@@ -47,9 +47,11 @@ $(document).ready(function(){
 					var price=data[i].price
 					
 					var temp = "<a href = http://localhost:3000/phoneinfo?pid="+ phoneid + '>' +company +'&nbsp&nbsp&nbsp' + model + '&nbsp&nbsp&nbsp' +"</a></br></br>";
-					var COUNT="Results Found: " + data.length+"</br>";
+					var COUNT="Results Found:" + data.length+"</br>";
 					myString= myString + temp;
 				};
+				if(data.length==0)
+					var COUNT="Results Found:"+ 0 ;
 					
 					showIt(myString,COUNT);
 				}
